@@ -29,7 +29,7 @@ for f in "${arr[@]}"; do
    mv Notebooks/"$filename".md  Markdown/"$filename".md
 
    # Convert the Notebook to PDF
-   jupyter-nbconvert --to tex Notebooks/"$filename".ipynb
+   jupyter-nbconvert --to latex Notebooks/"$filename".ipynb
    jupyter-nbconvert --to pdf Notebooks/"$filename".ipynb
    # Move to the html directory
    mv Notebooks/"$filename".pdf  Pdfs/"$filename".pdf
