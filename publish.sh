@@ -16,7 +16,7 @@ for f in "${arr[@]}"; do
    # Convert the Notebook to HTML
    jupyter-nbconvert --to html Notebooks/"$filename".ipynb
    # Move to the html directory
-   mv Notebooks/"$filename".html  rendered/"$filename".html
+   mv Notebooks/"$filename".html  Rendered/"$filename".html
 
    # Convert the Notebook to slides
    jupyter-nbconvert --to slides Notebooks/"$filename".ipynb --reveal-prefix=reveal.js
