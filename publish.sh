@@ -30,6 +30,7 @@ for f in "${arr[@]}"; do
 
    # Convert the Notebook to PDF
    jupyter-nbconvert --to latex Notebooks/"$filename".ipynb
+   mv Notebooks/"$filename".tex  Notebooks/notebook.tex
    jupyter-nbconvert --to pdf Notebooks/"$filename".ipynb
    # Move to the html directory
    mv Notebooks/"$filename".pdf  Pdfs/"$filename".pdf
