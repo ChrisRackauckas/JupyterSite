@@ -77,6 +77,11 @@ http://ChrisRackauckas.github.io/JupyterSite/
 
 For organizations, the user name is replaced with the organization name.
 
+#### Caveat
+
+Note that PDF output is not compatible with the usage of Markdown images (though
+code with images will allow the PDFs to build, but the images will not appear).
+
 ## Easy Usage from Julia
 
 This repository is also setup as a Julia package repository. To have users easily
