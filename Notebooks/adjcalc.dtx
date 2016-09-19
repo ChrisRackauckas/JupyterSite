@@ -1,0 +1,413 @@
+% \iffalse meta-comment
+%<=*COPYRIGHT>
+%% Copyright (C) 2011-2012 by Martin Scharrer <martin@scharrer-online.de>
+%% ----------------------------------------------------------------------
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainer of this work is Martin Scharrer.
+%%
+%% This work consists of the files adjcalc.dtx, adjustbox.ins
+%% and the derived file adjcalc.sty.
+%% It is part of the larger adjustbox bundle.
+%%
+%<=/COPYRIGHT>
+% \fi
+%
+% \iffalse
+%<*driver>
+\ProvidesFile{adjcalc.dtx}[%
+%<=*DATE>
+    2012/05/16
+%<=/DATE>
+%<=*VERSION>
+    v1.1
+%<=/VERSION>
+    DTX file for the adjcalc package]
+\documentclass[a4paper]{ydoc}[2011/11/16]
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{fourier}
+\usepackage{newverbs}
+\MakeSpecialShortVerb\qverb\"
+%\AtBeginDocument{\MakeShortMacroArgs\`\relax}
+%\AtEndDocument{\DeleteShortVerb\`}
+\GetFileInfo{adjcalc.dtx}
+\usepackage{adjcalc}[\filedate]
+\usepackage{tikz}
+\normalmarginpar
+
+
+%\EnableCrossrefs
+%\CodelineIndex
+%\RecordChanges
+\OnlyDescription
+\begin{document}
+ \DocInput{\jobname.dtx}
+  \PrintChanges
+  %\newpage\PrintIndex
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{0}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v1.0}{2011/11/16}{First version after extraction from \pkg{adjustbox} package.}
+% \changes{v1.1}{2012/05/16}{Better separation from the \pkg{adjustbox} package. Added own manual.}
+%
+% \GetFileInfo{adjcalc.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment,\def,\edef,\xdef,\gdef,\let}
+% \bundle{adjustbox}
+% \author{Martin Scharrer}
+% \email{martin@scharrer-online.de}
+% \ydocpdfsettings
+% \maketitle
+%
+% \begin{abstract}
+% This package provides macros to assign or to add algebraic expressions to \LaTeX lengths and counters.
+% It either uses $\epsilon$-\TeX, the \pkg{calc} package or the \pkg{pgfmath} package internally to achieve this.
+% This package is part of the \pkg{adjustbox} bundle and was originally part of the \pkg{adjustbox} package before
+% it was extracted to a dedicated package.
+% \end{abstract}
+%
+% \section{Introduction}
+% \LaTeX\ lengths and counters can be set using \Macro\setlength and \Macro\setcounter,
+% and values can be added to these using \Macro\addtoclength and \Macro\addtocounter, respectively.
+% By default these macros await a single length or integer value to be assigned or added.
+% However, often it is beneficial to use a short algebraic expression, like a sum of two values, instead.
+% The \pkg{calc} package was created for this and redefines the above macros to parse the given expression.
+% Another possibility is to use $\epsilon$-\TeX's \Macro\dimexpr or \Macro\glueexpr which also allows for
+% several algebraic operations and is more efficient than the higher-level \pkg{calc} package.
+% Finally PGF/TikZ provides a large math engine with the \pkg{pgfmath} package. It allows even
+% for complicated functions like $\log$ or $\sin$. However, \pkg{pgfmath} is rather large, especially because
+% with PGF v2.10 it cannot be loaded on its own due to a bug, which forces the whole \pkg{pgf} package to be loaded.
+%
+% Package authors which like to write macros which allow algebraic expressions for its length arguments
+% now face the dilemma which math interface they should use. Either they exclude users which do not have an
+% $\epsilon$-TeX distribution (even if they are very rare) or require to load a large package.
+% This was the case with the \pkg{adjustbox} package and therefore own wrapper macros were used instead which
+% will use one of the different math engine mentioned above.
+% Because this functionality was deemed useful for other packages of the same and other authors it was
+% extracted into the dedicated package \pkg{adjcalc}. The idea is that the user can choose the used math engine
+% using package options.
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Package Options}\label{sec:options} ^^A (((
+% The following options define the way length values are processed by the provided macros.
+% The first group can be either used as package options and as local setting using \Macro\adjcalcset or as keys
+% for \Macro\adjustbox or the \env{adjustbox} environment (but not for \Macro\includegraphics even if the \opt{export}
+% option of \pkg{adjustbox} was used).
+% The only difference between using them as package options or keys is that as package option they also load required packages.
+% Therefore all keys used in the document should be used as package options first or the required packages must be loaded
+% manually.
+%
+% \begin{description}\def\oitem#1{\item[{\normalfont\opt{#1}}]}
+%   \oitem{etex} Uses the $\epsilon$-\TeX\ primitive \Macro\glueexpr to parse length values. This allows for additions,
+%      subtractions as well as multiplications and devision by a numeric factor. See the official \pkg{etex\_man} document
+%      for more details. This setting is the default if $\epsilon$-\TeX\ is detected (which should be the case with all
+%      modern \LaTeX\ distributions).
+%   \oitem{calc} Uses the \pkg{calc} package to parse length values. It supports all operations mentioned for \opt{etex} and
+%      also some other operation like \Macro\widthof{<text>}.
+%      See the \pkg{calc} package manual for more details.
+%      This is the default setting if $\epsilon$-TeX is not detected.
+%   \oitem{pgfmath} Uses the \pkg{pgfmath} package of the \pkg{pgf} bundle to parse length values. It supports all basic
+%      numeric operations and also advanced mathematical functions.
+%      See the \pkg{pgf} manual for more details.
+%      Because the \pkg{pgfmath} package can't be loaded
+%      independently in the current version (v2.10) the whole \pkg{pgf} package will be loaded.
+%   \oitem{overwrite} This option will overwrite the standard macros with the macros of this package.
+%       This e.g.\ sets \Macro\setlength to be identical to \Macro\adjsetlength.
+%       Any package option used after \opt{overwrite} will still take affect before the redefinition,
+%       i.e.\ the order in which \opt{overwrite} is used is not meaningful.
+%   \oitem{defaultunit}\MacroArgs!{\hspace*{-1ex}}!'='<unit>\relax
+%      This sets the default unit used for macros and keys which allow for unit-less values,
+%      e.g.\ the \Key{trim} key of \Macro\adjustbox or the \Macro\trimbox macro of the \pkg{trimclip} package.
+%      The standard default unit is the same as for \Macro\includegraphics: "bp" (big points, PostScript points).
+%      However, for \LaTeX\ material \TeX\ normal unit "pt" (\TeX\ points) are better suited and will avoid rounding
+%      errors which otherwise get introduced by the internal conversion.
+%      The default unit is only used if the particular value is only a single number without unit,
+%      but not if any mathematical operations are used.
+%      If the special value |none| is used no default unit is applied and the internal check if the value is a single number
+%      is by-passed. This gives a small speed bonus and can be used to avoid potential issues with complex values.
+%      At this moment this setting will disable the default unit feature for the rest of the current group (i.e.\ all
+%      further \Macro\adjustbox keys or globally if used as a package option) and further usages of this option will
+%      have no affect. This might change in future versions of this package.
+% \end{description}
+%
+% \noindent
+% The following option can only be used as package option:
+% \begin{description}\def\oitem#1{\item[{\normalfont\opt{#1}}]}
+%   \oitem{none} Disables the features of this package and makes all macros use the normal \LaTeX\ equivalents,
+%                e.g.\ \Macro\adjsetlength will expand to \Macro\setlength, etc.
+%                This option also disables any previous set option as well as any future use of \opt{overwrite}.
+% \end{description}
+%
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \section{Macros}
+%
+% \DescribeMacro\adjcalcset{<key=value, \ldots>}
+% This configuration macro allows to change the above mentioned options during the document.
+% Any changes are only locally to the current group/environment.
+% Please see the descriptions of the options for any limitations.
+%
+%
+% \DescribeMacro\adjsetlength{<\textbackslash lengthmacro>}{<length expression>}
+% \DescribeMacro\adjaddtolength{<\textbackslash lengthmacro>}{<length expression>}
+% \DescribeMacro\adjsetcounter{<counter name>}{<integer expression>}
+% \DescribeMacro\adjaddtocounter{<counter name>}{<integer expression>}
+% These macros can be used to set and add to \LaTeX\ length registers and counters like with the normal
+% macros \Macro\setlength, \Macro\addtolength, \Macro\setcounter and \Macro\addtocounter.
+% However, these macros allow the use of algebraic expressions, like sums and multiplications, while
+% the standard macros only await a single value.
+%
+%
+% \DescribeMacro\adjsetlengthdefault{<\textbackslash lengthmacro>}{<length expression with or without unit>}
+% This macro set the length macro but does also support length values without an explicit unit.
+% If no unit is used the default unit set by the \opt{defaultunit} option is used. The initial default unit
+% is `|bp|' (big points, i.e.\ PostScript/PDF points, 72bp=1inch).
+%
+%
+% \StopEventually{}
+% \clearpage
+% \section{Implementation}
+%
+% \iffalse
+%<*adjcalc.sty>
+% \fi
+%    \begin{macrocode}
+%<!COPYRIGHT>
+\ProvidesPackage{adjcalc}[%
+%<!DATE>
+%<!VERSION>
+%<*DRIVER>
+    2099/01/01 develop
+%</DRIVER>
+    Provides advanced setlength with multiple back-ends (calc, etex, pgfmath)]
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\RequirePackage{xkeyval}
+%    \end{macrocode}
+%
+%
+% Use e-TeX by default if available, otherwise the \pkg{calc} package.
+%    \begin{macrocode}
+\def\adjcalc@atend{%
+\begingroup
+\expandafter\ifx\csname glueexpr\endcsname\relax
+    \endgroup
+    \RequirePackage{calc}%
+    \adjcalc@calc
+    \def\adjcalc@etex{\PackageError{adjcalc}{e-TeX not available for current compiler!}}%
+\else
+    \endgroup
+    \adjcalc@etex
+\fi
+}
+%    \end{macrocode}
+%
+% Initial definitions for the package options. This macros are later redefined because the same keys
+% can be used as macro options.
+%    \begin{macrocode}
+\def\adjcalc@pgfmath{\AtEndOfPackage{\RequirePackage{pgf}}\def\adjcalc@atend{\adjcalc@pgfmath}}
+\def\adjcalc@etex{\def\adjcalc@atend{\adjcalc@etex}}
+\def\adjcalc@calc{\AtEndOfPackage{\RequirePackage{calc}}\def\adjcalc@atend{\adjcalc@calc}}
+\def\adjcalc@overwrite{\AtEndOfPackage{\adjcalc@overwrite}}
+%    \end{macrocode}
+%
+% The initial default unit is `|bp|' like for \pkg{graphicx}.
+%    \begin{macrocode}
+\def\adjcalc@defaultunit{bp}%
+%    \end{macrocode}
+%
+%
+% Options:
+%    \begin{macrocode}
+\DeclareOptionX<adjcalc>{pgfmath}{\adjcalc@pgfmath}
+\DeclareOptionX<adjcalc>{etex}{\adjcalc@etex}
+\DeclareOptionX<adjcalc>{calc}{\adjcalc@calc}
+\DeclareOptionX<adjcalc>{none}{%
+    \let\adjcalc@atend\relax
+    \let\adjcalc@overwrite\relax
+    \def\adjsetlength{\setlength}%
+    \def\adjaddtolength{\addtolength}%
+    \def\adjsetcounter{\setcounter}%
+    \def\adjaddtocounter{\addtocounter}%
+}
+\DeclareOptionX<adjcalc>{overwrite}{\adjcalc@overwrite}
+\DeclareOptionX<adjcalc>{defaultunit}[bp]{%
+    \begingroup
+    \def\@tempa{#1}%
+    \def\@tempb{none}%
+    \ifx\@tempa\@tempb% 'none':
+        \endgroup
+        \def\adjsetlengthdefault{\adjsetlength}%
+    \else
+        \ifx\@tempb\adjcalc@defaultunit
+            \endgroup
+            % was 'none' before
+            \let\adjsetlengthdefault\adjsetlengthdefault@
+        \else
+            \endgroup
+        \fi
+    \fi
+    \def\adjcalc@defaultunit{#1}%
+}
+\ProcessOptionsX*<adjcalc>
+\disable@keys{adjcalc}{none}
+%    \end{macrocode}
+%
+%
+% \begin{macro}{\adjcalcset}
+% User level settings macro.
+%    \begin{macrocode}
+\def\adjcalcset{%
+    \setkeys{adjcalc}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjcalc@etex}
+%    \begin{macrocode}
+\def\adjcalc@etex{%
+    \protected\def\adjsetlength##1##2{%
+        ##1=\glueexpr(##2)\relax
+    }%
+    \protected\def\adjaddtolength##1##2{%
+        \advance##1 by \glueexpr(##2)\relax
+    }%
+    \protected\def\adjsetcounter##1##2{%
+        \@ifundefined{c@##1}%
+            {\@nocounterr{##1}}%
+            {\global\csname c@##1\endcsname\numexpr(##2)\relax}%
+    }%
+    \protected\def\adjaddtocounter##1##2{%
+        \@ifundefined{c@##1}%
+            {\@nocounterr{##1}}%
+            {\global\advance\csname c@##1\endcsname\numexpr(##2)\relax}%
+    }%
+    \def\adjsetlengthdefault@##1##2{%
+        \@defaultunits##1=\glueexpr##2 \adjcalc@defaultunit\relax\@nnil
+    }%
+    \let\adjsetlengthdefault\adjsetlengthdefault@
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\newif\if@adjcalc@needsdefault
+%    \end{macrocode}
+%
+%
+% \begin{macro}{\adjcalc@calc}
+% This uses the underlying (re-)definitions of the normal macros (\Macro\setlength, ...) done by the \pkg{calc} package.
+% This allows to locally redefine \Macro\setlength to call \Macro\adjsetlength, etc., without causing an infinite loop.
+%    \begin{macrocode}
+\def\adjcalc@calc{%
+    \DeclareRobustCommand\adjsetlength{\calc@assign@skip}%
+    \DeclareRobustCommand\adjaddtolength[1]{\calc@assign@skip{\advance ##1}}%
+    \DeclareRobustCommand\adjsetcounter[2]{\@ifundefined{c@##1}{\@nocounterr{##1}}{\calc@assign@count{\global\csname c@##1\endcsname}{##2}}}%
+    \DeclareRobustCommand\adjaddtocounter[2]{\@ifundefined{c@##1}{\@nocounterr{##1}}{\calc@assign@count{\global\advance\csname c@##1\endcsname}{##2}}}%
+    \def\adjsetlengthdefault@##1##2{%
+        \begingroup
+        \def\calc@post@scan####1!{%
+            \def\@tempa{####1}%
+            \ifx\@tempa\@empty
+              \endgroup% to end calc processing
+              % is number only
+              \global\@adjcalc@needsdefaulttrue
+            \else
+              \endgroup% to end calc processing
+              % full expression
+              \global\@adjcalc@needsdefaultfalse
+            \fi
+        }%
+        \calc@assign@skip{##1}{##2 \adjcalc@defaultunit}%
+        \endgroup
+        \if@adjcalc@needsdefault
+            ##1=##2 \adjcalc@defaultunit\relax
+        \else
+            \calc@assign@skip{##1}{##2}%
+        \fi
+    }%
+    \def\adjcalc@checkdefault##1\@nnil##2##3{%
+        \ifx\relax##1\relax\else
+            \calc@assign@skip{##2}{##3}%
+        \fi
+    }%
+    \let\adjsetlengthdefault\adjsetlengthdefault@
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjcalc@pgfmath}
+%    \begin{macrocode}
+\def\adjcalc@pgfmath{%
+    \DeclareRobustCommand\adjsetlength{\pgfmathsetlength}%
+    \DeclareRobustCommand\adjaddtolength{\pgfmathaddtolength}%
+    \DeclareRobustCommand\adjsetcounter{\pgfmathsetcounter}%
+    \DeclareRobustCommand\adjaddtocounter{\pgfmathaddtocounter}%
+    \def\adjsetlengthdefault@##1##2{%
+        \edef\pgfmathresultunitscale{1\adjcalc@defaultunit}%
+        \let\pgfmathpostparse\pgfmathscaleresult
+        \pgfmathparse{##2}%
+        ##1=\pgfmathresult pt\relax
+    }%
+    \let\adjsetlengthdefault\adjsetlengthdefault@
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjcalc@overwrite}
+%    \begin{macrocode}
+\def\adjcalc@overwrite{%
+    \let\setlength\adjsetlength
+    \let\addtolength\adjaddtolength
+    \let\setcounter\adjsetcounter
+    \let\addtocounter\adjaddtocounter
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% Execute at-end code.
+%    \begin{macrocode}
+\adjcalc@atend
+%    \end{macrocode}
+% \iffalse
+%</adjcalc.sty>
+% \fi
+%
+% \Finale
+% \endinput

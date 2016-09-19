@@ -1,0 +1,4236 @@
+% \iffalse meta-comment
+%<=*COPYRIGHT>
+%% Copyright (C) 2011-2012 by Martin Scharrer <martin@scharrer-online.de>
+%% ----------------------------------------------------------------------
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainer of this work is Martin Scharrer.
+%%
+%% This work consists of the files adjustbox.dtx, adjustbox.ins
+%% and the derived file adjustbox.sty.
+%%
+%<=/COPYRIGHT>
+% \fi
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ^^A DRIVER (((
+% \iffalse
+%<*driver>
+\ProvidesFile{adjustbox.dtx}[%
+%<=*DATE>
+    2012/05/21
+%<=/DATE>
+%<=*VERSION>
+    v1.0
+%<=/VERSION>
+    DTX file for the adjustbox package]
+\documentclass[a4paper]{ydoc}[2011/08/11]
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{fourier}
+\usepackage{newverbs}
+\MakeSpecialShortVerb\qverb\"
+%\AtBeginDocument{\MakeShortMacroArgs\`\relax}
+%\AtEndDocument{\DeleteShortVerb\`}
+\GetFileInfo{adjustbox.dtx}
+\usepackage{adjustbox}[\filedate]
+\usepackage{tikz}
+
+\renewenvironment{example}[1][Example:]{%
+    \subsubsection*{#1}%
+}{%
+    \par
+}
+\newenvironment{examples}[1][Examples:]{%
+    \subsubsection*{#1}%
+}{%
+    \par
+}
+\global\optionaloff
+\let\optionalon\relax
+
+\lstdefinelanguage{none}{}%
+\lstdefinelanguage{adjustbox}{%
+  moretexcs={%
+      begin,end,adjustbox
+  },
+  emph={%
+      frame,fbox,cframe,cfbox,minipage,raise
+  },
+}%
+
+\lstdefinestyle{examplecode}{%
+    basicstyle=\ttfamily\small,
+    numbers=none,language=none,
+    classoffset=1,
+    morekeywords={begin,end},
+    keywordstyle=\bfseries,
+    classoffset=0,
+    morekeywords={adjustbox,minsizebox,maxsizebox,lapbox,marginbox,phantombox},
+    keywordstyle=\macrodescstyle,
+    emph={viewport, trim, Trim, Viewport, Clip, Clip*, frame, fbox, cframe, cfbox, reflect, lap, margin, margin*, dpi,
+    pxdim, execute, raise, valign, bgcolor, set, height, depth, vsize, width, totalheight, center, left, right, outer, inner, min, max,
+    size, totalsize,
+    minipage, innerenv, innercode, env, Addcode, addcode, precode, Precode, appcode, angle, scale, height, width, totalheight, resolution,
+    },
+    emphstyle=\keydescstyle,
+}
+
+\makeatletter
+\def\PrintExample{%
+  \begingroup
+  \par\smallskip\noindent
+  \leavevmode
+  \BoxExample
+  \@tempdima=\textwidth
+  \advance\@tempdima by -\wd\examplecodebox\relax
+  \advance\@tempdima by -\wd\exampleresultbox\relax
+  \advance\@tempdima by -15pt\relax
+  \ifdim\@tempdima>\bigskipamount
+    \hbox to \textwidth{%
+     \null\hss
+     \minipage[c]{\wd\examplecodebox}\usebox\examplecodebox\endminipage
+     \hfill\hskip\bigskipamount\hfill
+     \minipage[c]{\wd\exampleresultbox}%
+        \EXAMPLERESULT
+     \endminipage
+     \hss\null
+     }%
+  \else
+    \vbox{%
+        \leftline{\usebox\examplecodebox}%
+        \vspace{\bigskipamount}%
+        \rightline{\EXAMPLERESULT}%
+    }%
+  \fi
+  \par\smallskip
+  \endgroup
+}
+\def\EXAMPLERESULT{%
+    \leavevmode\hbox{%
+    \textcolor{exampleborder}{%
+        \boxframe
+            {\dimexpr\wd\exampleresultbox+2\fboxrule\relax}%
+            {\dimexpr\ht\exampleresultbox+\fboxrule\relax}%
+            {\dimexpr\dp\exampleresultbox+\fboxrule\relax}%
+        \hskip-\wd\exampleresultbox
+        \hskip-\fboxrule
+    }%
+    \usebox\exampleresultbox
+    }%
+}%
+\makeatother
+\colorlet{exampleborder}{black!33}
+\def\Descsep{\par\vskip-2.5ex\relax}
+
+%\EnableCrossrefs
+%\CodelineIndex
+%\RecordChanges
+\OnlyDescription
+\renewcommand{\bottomfraction}{0.5}
+\begin{document}
+ \DocInput{adjustbox.dtx}
+  \PrintChanges
+  %\newpage\PrintIndex
+\end{document}
+%</driver>
+% \fi
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ^^A Title page (((
+% \CheckSum{2141}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v0.1}{2011/01/24}{First internal version}
+% \changes{v0.2}{2011/01/27}{First released version}
+% \changes{v0.3}{2011/03/20}{Bug fix for wrong baseline placed on the bottom}
+% \changes{v0.4}{2011/07/xx}{Added pdftex driver}
+% \changes{v0.5}{2011/08/13}{Added more macros and keys}
+% \changes{v0.5a}{2011/08/21}{Fixed \Key{left} and \Key{right} keys. Fixed \Key{valign}'='t}
+% \changes{v0.6}{2011/09/04}{Added tabular support.}
+% \changes{v0.6a}{2011/10/29}{Fixed issue with keys affecting the content in an unwanted way.}
+% \changes{v0.7}{2011/10/30}{Added \cs{adjustboxset} and \cs{adjustimage} macros.}
+% \changes{v0.8}{2011/11/14}{
+%     Added driver files for dvips and xelatex. Moved pdftex driver code to own file.
+%     Fixed and improved default unit code for the \opt{calc} option.
+%     Changed \cs{adjustimage} code to use internals of \cs{includegraphics}. This allows the redefinition of \cs{includegraphics}.
+%     Added manual for \Key{bgcolor} and added \Key{bgcolor*}.
+%     Changed \Key{bgimage} to use \cs{adjustimage}.
+%     Added manual entries for \Key{cfbox} and \Key{cframe}.
+%     Removed loading of non-mandatory \pkg{storebox} package for now.
+%     Added \Key{set vsize}.
+%     Added shortcuts \Key{rlap} and \Key{llap}.
+%     Added \adjincludegraphics and the Export option.
+%     Fix for \Key{innerenv} argument.
+%     Added lengths \cs{Width}, \cs{Height}, \cs{Depth} and \cs{Totalheight} for the original dimensions of the content.
+%     Added own \cs{raisebox} variant to support math expressions even for \cs{includegraphics}.
+%     Some code cleanup.
+%     Added \Key{varwidth} key as an alternative to \Key{minipage}.
+%     Added \stackbox and \Key{stack} key and \env{stackbox} environment (similar to \cs{shortstack})
+%     Added check for \pkg{xcolor} package.
+% }
+% \changes{v0.9}{2012/05/16}{
+%   Basic trim and clip macros and driver files are now placed in a dedicated minimal package 'trimclip'.
+%   Special thanks goes to Joseph Wright (LaTeX3 project) for his work on the driver files.
+%   Clipping drivers are provided for 'pdftex' (incl. LuaTeX), 'dvips' and 'xetex' as well as a PGF fall-back
+%   driver.
+%   Packages: New dedicated 'trimclip' package with own manual.
+%       Better separation between 'adjcalc' and 'adjustbox' package.
+%       Review of manuals
+%   New adjustbox keys:
+%       * content
+%       * gstore
+%       * gstore*
+%       * gstore width/height/depth/totalheight/sizes
+%       * gobble/discard
+%       * phantom
+%       * warn width
+%       * float
+%       * nofloat
+%       * figure
+%       * label
+%       * caption
+%       * vspace
+%       * vspace*
+%       * padding  (alias of 'margin')
+%       * padding* (alias of 'margin*')
+%   Fixes: env key now works correctly; Fixed raise box code.
+%   Macro changes: Added third optional argument to \stackbox.
+% }
+% \changes{v1.0}{2012/05/21}{%^^A
+%       * Updated manual to contain all new keys and macro.
+%       * Code optimisations.
+%       * Improvements of (re-)boxing code.
+%       * Added user-level macros to define keys.
+%       * Changed horizontal alignment keys to box the content and added matching macros.
+%       * Changed horizontal inner/outer side keys to use 'ifodd' package and added matching macros.
+%       * Added missing \cs{leavevmode} for "raise" key.
+%       * Simplified code for "valign" key. Fixed spurious space for "valign=v".
+%       * Fixed min/max size keys to double a single value correctly.
+%       * Code cleanup with "warn width" key.
+% }
+%
+% \GetFileInfo{adjustbox.dtx}
+%
+% \DoNotIndex{\newcommand,\newenvironment,\def,\edef,\xdef,\gdef,\let}
+%
+% \author{Martin Scharrer}
+% \email{martin@scharrer-online.de}
+% \repository{https://bitbucket.org/martin_scharrer/adjustbox}
+% \ydocpdfsettings
+% \maketitle
+%
+% \makeatletter
+% \def\LATeX{\texorpdfstring{(L\kern -.36em{\sbox \z@ T\vbox to\ht \z@ {\hbox {\check@mathfonts
+%  \fontsize \sf@size \z@ \math@fontsfalse \selectfont A}\vss }}\kern -.15em)\TeX}{(La)TeX}}
+% \makeatother
+%
+% \begin{abstract}
+%  This package allows to adjust general \LATeX\ material in several ways using a key=value interface.
+%  It got inspired by the interface of \Macro\includegraphics from the \pkg{graphicx} package.
+%  This package also loads the \pkg{trimclip} package which code was once included in this package.
+% \end{abstract}
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Introduction} ^^A (((
+% The standard \LaTeX{} package \pkg{graphicx} (the extended version of \pkg{graphics}) provides the macro
+% \Macro\includegraphics[<options>]{<file name>} which can be used to include graphic files. Several options can be used
+% to scale, resize, rotate, trim and/or clip the graphic.
+% The macros \Macro\scalebox, \Macro\resizebox and \Macro\rotatebox are also provided to apply the corresponding
+% operation on \LATeX{} material, which is subsequently placed inside a \Macro\hbox.
+% However no macros are provided to trim or clip \LATeX{} material, most likely because this operations
+% are not done by \TeX{} but by the output format, i.e.\ using PostScript (PS) or PDF operations.
+%
+% This package started by providing the missing macros \Macro\clipbox and \Macro\trimbox.
+% Then a general \Macro\adjustbox macro which allows to combine many operations using a key=value syntax was added and
+% further extended until it represented the main feature of this package.  Newly added keys are also provided as
+% dedicated macros and corresponding environments.
+% The \Macro\clipbox and \Macro\trimbox macros were then moved together with the required output driver code to a
+% dedicated package \pkg{trimclip}. This allows documents and other packages to use these basic features without
+% loading the full \pkg{adjustbox} package.
+%
+%
+% ^^A )))2
+% \subsection{Dependencies} ^^A (((2
+% The \pkg{adjustbox} package and its \pkg{trimclip} sub-package require the author's other packages \pkg{adjcalc}
+% (bundled with \pkg{adjustbox}) and \pkg{collectbox}, as well as the packages \pkg{xkeyval}, \pkg{graphicx} and \pkg{ifpdf}.
+% The \pkg{varwidth} package is automatically loaded if installed, otherwise the \Key{varwidth} and \Key{stack} keys are
+% disables as well as \Macro\stackbox and the \env{stackbox} environment.
+% The \pkg{ifoddpage} package is automatically loaded if installed, otherwise the \Key{outer} and \Key{inner} keys are
+% disables as well as \Macro\outersidebox and \Macro\innersidebox macros and corresponding environments.
+% For features which use colors the \pkg{xcolor} package must also be loaded manually (the \pkg{color} package is fine, too).
+% The experimental |split| and |pagebreak| features also require the \pkg{storebox} package to be loaded manually.
+%
+% ^^A )))2
+% \subsection{Verbatim Support}\label{sec:verbatim} ^^A (((2
+% The macros provided by \pkg{adjustbox} and \pkg{trimclip} read the content as a horizontal \TeX{} box and not as an
+% macro argument in order to support verbatim content.
+% This means that the braces around the content can also be written as \Macro\bgroup and \Macro\egroup:
+% \begin{macroquote}
+%   \adjustbox{key=value,\ldots}\AlsoMacro\bgroup~<content>\AlsoMacro\egroup
+% \end{macroquote}
+% Special care is taken to allow the \meta{content} to be a single macro (except \Macro\bgroup) without any braces:
+% \begin{macroquote}
+%   \adjustbox{key=value,\ldots}\AlsoMacro\somemacro
+% \end{macroquote}
+% This is to support the habit of some \LaTeX{} users to drop the braces for single token arguments.
+% All environments support verbatim content.
+% Note that the plain\TeX{} syntax for environments (\Macro\adjustbox\ldots\Macro\endadjustbox) can not be used
+% because it will trigger \Macro\adjustbox as a macro. However, the braces around the content can be replaced
+% by \Macro\bgroup and \Macro\egroup.
+%
+% ^^A )))2
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Package Options}\label{sec:options} ^^A (((
+% This package accepts the following options:
+%
+% \begin{description}\def\oitem#1{\item[{\normalfont\opt{#1}}]}
+%   \oitem{export} Exports most keys of \Macro\adjustbox to \Macro\includegraphics so that they can be used with this
+%                  macro as well.
+%   \oitem{Export} Sets \Macro\includegraphics to be identical to \Macro\adjincludegraphics, which also allows the usage
+%                  of all \Macro\adjustbox keys.
+%   \oitem{pgf} This option is passed to \pkg{trimclip} and makes it to use the \pkg{pgf} package for all clip operations.
+%               This overrides all automatically detected drivers.
+%   \oitem{PGF} This option will pass the \opt{pgf} to \pkg{trimclip} and enable the \opt{pgfmath} option of
+%               \pkg{adjcalc}, i.e.\ the \pkg{pgf}
+%               package is used for clip operations and the \pkg{pgfmath} pacakge is used to parse length arguments.
+%   \oitem{minimal} Only load a minimal set of code, i.e.\ \pkg{trimclip} and \Macro\adjustbox/\env{adjustbox}
+%               but no additional keys and macros.
+%  \end{description}
+%
+% \noindent
+% The following options define the way length values are processed by the provided macros.
+% They are passed to the \Macro\adjcalcset macro of the \pkg{adjcalc} package and load any required packages.
+% These options can also be used as local keys on \Macro\adjustbox. See the \pkg{adjcalc} manual for more details on
+% them.
+%
+% \begin{description}\def\oitem#1{\item[{\normalfont\opt{#1}}]}
+%   \oitem{etex} Uses the $\epsilon$-\TeX\ primitive \Macro\glueexpr to parse length values.
+%   \oitem{calc} Uses the \pkg{calc} package to parse length values.
+%   \oitem{pgfmath} Uses the \pkg{pgfmath} package of the \pkg{pgf} bundle to parse length values.
+%   \oitem{defaultunit}\MacroArgs!{\hspace*{-1ex}}!'='<unit>\relax
+%      This sets the default unit used for values which accept length without units, e.g.\ \Key{trim}.
+% \end{description}
+%
+% \noindent
+% In addition, all driver options of the \pkg{trimclip} package are also accepted and passed to it.
+% All unknown options are passed to the \pkg{graphicx} package, which might pass them down to the \pkg{graphics}
+% package.
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Main Macros}^^A (((
+% The following macros and environments represent the main functionality of this package.
+% Special care is taken so that the macros and the environments can have the same name.
+% For starred environments the star can be either part of the name or an optional argument.
+%
+% \subsection{Adjust Box Content} ^^A (((2
+% \vskip-\lastskip
+% \DescribeMacro\adjustbox{<key=value, \ldots>}{<content>}
+% The \Macro\adjustbox macro allows the modification of general \LATeX\ content using a key=value syntax.
+% This can be seen as an extension of the \Macro\includegraphics macro from images to any \LATeX{} material.
+% The macro supports the all \Macro\includegraphics keys and many more.
+% However, they are provided as a mandatory not as an optional argument, because an \Macro\adjustbox without options
+% would not make sense and can be replaced by a simple \Macro\mbox.
+% As already stated the content is read as a box, not as a macro argument, therefore verbatim or other special
+% content is supported and the braces can also be replaced by \Macro\bgroup and \Macro\egroup.
+% There is no starred version of this macro.
+%
+% \DescribeEnv[<content>]{adjustbox}{<key=value, \ldots>}
+% The environment version of \Macro\adjustbox. A difference to the macro is that it includes \Macro\noindent
+% to suppress paragraph indention.
+%
+% \Needspace*{5\baselineskip}
+% \subsection{Adjust Images}
+% \vskip-\lastskip
+% \DescribeMacro\adjustimage{<key=value, \ldots>}{<image filename>}
+% This macro can be used as an extension of \Macro\includegraphics.
+% While \Macro\adjustbox is based on the same interface as \Macro\includegraphics it provides more keys and allows
+% global keys set by \Macro\adjustboxset. Most keys can be exported to \Macro\includegraphics using the \opt{export}
+% option, but there is no support for global keys\footnote{However some keys, but not all, can be set globally using
+% \Macro\setkeys{Gin}{<includegraphic key=value pairs>}}.  Therefore it can make sense to use
+% \Macro\adjustbox{<key/value pairs>}{\AlsoMacro\includegraphics{<filename>}}, which is the definition of
+% \Macro\adjustimage.
+% However, it does not use \Macro\includegraphics directly, but an internal macro, to allow the redefinition of
+% \Macro\includegraphics.
+% This macro does not require the \opt{export} option and therefore helps to avoid option clashes
+% if \pkg{adjustbox} is loaded at several places.
+%
+%
+% \DescribeMacro\adjincludegraphics[<key/value pairs>]{<image filename>}
+% Like \Macro\adjustimage but in the same format as \Macro\includegraphics, i.e.\ with an optional argument.  This macro
+% allows to use all features of \Macro\adjustbox on images, however special care must be taken if the values include
+% `|[ ]|'.  In this case either the whole value or the while optional argument must be wrapped in `|{ }|':
+% \Macro\adjincludegraphics['key='{[..]},...]{..} or \\\Macro\adjincludegraphics[{key=[..],...}]{..}. \\
+% It is possible to redefine \Macro\includegraphics to \Macro\adjincludegraphics and this is done by
+% the \opt{Export} option (not to be confused with the \opt{export} option).
+%
+%
+% \subsection{Setting keys globally} ^^A (((2
+% \vskip-\lastskip
+% \DescribeMacro\adjustboxset{<global keys to be executed \emph{before} local keys>}
+% \DescribeMacro\adjustboxset*{<global keys to be executed \emph{after} local keys>}
+% Using these two macros all keys can be set globally, i.e.\ for all future \Macro\adjustbox macros and \env{adjustbox}
+% environments.  Note that these settings are actually \emph{local} to the current \TeX\ group and only really global if
+% used in the preamble or outside any group.  The normal macro will place all given keys before the keys used in first
+% argument of \Macro\adjustbox\ / \env{adjustbox}, while the starred version will place them afterwards.
+%
+% If these macros are used several times there keys are accumulated. This happens in the given order for the normal
+% version and in reversed order for the starred version, i.e.\ the keys of further \Macro\adjustboxset or
+% \Macro\adjustboxset* are always added so they face inwards.  If used without any keys but an empty argument, all keys
+% previously set with the same macro are removed (from the current \TeX\ scope).  This means \Macro\adjustboxset{}
+% clears all keys set be previously usages of \Macro\adjustboxset{<keys>} and \Macro\adjustboxset*{} clears all set by
+% \Macro\adjustboxset*{<keys>}.  Such resets are again local to the current \TeX\ group.
+%
+%
+% \begin{examples}
+% The macros:
+% \begin{macroquote}
+% \adjustboxset{keya=1} \\
+% \adjustboxset*{keyc=3}\\
+% \adjustbox{keyb=2}{content}
+% \end{macroquote}
+% are effectively the same as:
+% \begin{macroquote}
+% \adjustbox{keya=1,keyb=2,keyc=3}{content}
+% \end{macroquote}
+% \par\medskip\noindent
+% The macros:
+% \begin{macroquote}
+% \adjustboxset{keya=1,keyb=2} \\
+% \adjustboxset{keyc=3,keyd=4} \\
+% \adjustboxset*{keyg=7,keyh=8}\\
+% \adjustboxset*{keyi=9,keyj=10}\\
+% \adjustbox{keye=5,keyf=6}{content}
+% \end{macroquote}
+% are effectively the same as:
+% \begin{codequote}
+%   \AlsoMacro\adjustbox'{keya=1,keyb=2,keyc=3,keyd=4,keye=5,keyf=6,'\\
+%            !\hskip0pt!'            keyi=9,keyj=10,keyg=7,keyh=8}'{content}
+% \end{codequote}
+% \end{examples}
+%
+% ^^A )))2
+% \subsection{Argument Values}\label{sec:argval} ^^A (((2
+% All length values given in the arguments of all macros and keys provided by this package are parsed
+% by and advanced version of \Macro\setlength\relax (called \Macro\adjsetlength) which uses either $\epsilon$-\TeX\
+% expressions (default), the \pkg{calc} package (default fall-back) or the \Macro\pgfmathparse of the \pkg{pgf} package.
+% This allows for arithmetic expressions in these arguments. See the package options in \autoref{sec:options} to learn
+% how to change the used length parser.  Note that early versions of this package used \Macro\pgfmathparse by default.
+% Older documents therefore might need now use the \opt{pgfmath} option to compile correctly.
+%
+% Note that the four values for \Macro\trimbox and \Macro\clipbox as well as for the
+% \Key{trim} and \Key{viewport} option of \Macro\adjustbox are separated by spaces. If the expression of any of this
+% values holds a space or ends with a macro (eats trailing spaces!) it must be wrapped into braces "{ }".
+%
+%
+% \DescribeMacros
+%    \hbox{\Macro\width~~~\Macro\height~~~\Macro\depth~~~\Macro\totalheight}%
+% \endDescribeMacros
+% These \LaTeX{} lengths hold the current dimensions of the content and can be used as part all length arguments.  When
+% the size of the content is changed by a key these lengths will be adjusted to hold the new size for all further keys.
+% The totalheight is the height plus depth. With the \pkg{patch} option these lengths can also be used for
+% \Macro\includegraphics.
+%
+% \DescribeMacros
+%    \hbox{\Macro\Width~~~\Macro\Height~~~\Macro\Depth~~~\Macro\Totalheight}%
+% \endDescribeMacros
+% These \LaTeX{} lengths hold the original dimension of original unchanged content and are not modified.  They are
+% useful if the size of the content is modified by several keys, but further keys should still work relative to the
+% original content.
+%
+% \subsubsection*{Default unit}
+% If no unit is provided for of the bounding box coordinates (llx, lly, urx, ury) in the trim and clip features then
+% PostScript points (\emph{big points}, bp, $72\,\text{bp}=1\,\text{inch}$) are used, as it is the default behaviour of
+% the \Key{trim} and \Key{viewport} options of \pkg{graphicx}'s \Macro\includegraphics. Note that \pkg{graphicx}
+% converts all values, independent if a unit is provided or not, internally to bp, because graphics where traditionally
+% stored in Encapsulated PostScript (EPS) files. The more modern PDF files also use bp instead of pt.  Because the
+% \pkg{adjustbox} package macros target \LATeX{} material and users will mostly use pt values this internal conversion
+% to bp got disabled for them to avoid unnecessary rounding errors. Since v0.5 the default unit can be changed using the
+% |defaultunit|\MacroArgs'='<unit>\relax key (which is also usable as global package option).
+%
+% ^^A )))2
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Adjustbox Keys} ^^A (((
+% This packages provides the following \Macro\adjustbox keys with matching macros and environments.
+%
+%
+% \subsection{Trimming and Clipping} ^^A (((2
+% The following keys allow content to be trimmed (i.e.\ the official size is made smaller, so the remaining material
+% laps over the official boundaries) or clipped (overlapping material is not displayed).
+% These keys come in different variants, where the lower-case keys represent the behavior of
+% the corresponding \Macro\includegraphics keys. The corresponding macros (\Macro\trimbox, \Macro\clipbox, etc.)
+% and environments (\env{trimbox}, \env{clipbox}, etc.) are included in the
+% accompanying \pkg{trimclip} package and are explained in its manual.
+%
+% \DescribeKey{trim}'='<llx>~<lly>~<urx>~<ury>
+% \DescribeKey{trim}'='<all sites>
+% \DescribeKey{trim}'='<left/right>~<top/bottom>
+% This key represents the original \Key{trim} key of \Macro\includegraphics but accepts its value in different forms.
+% Unlike most other keys it always acts on the original content independent in which order it is used with other keys.
+% The key trims the given amounts from the lower left (ll) and the upper right (ur) corner of the box. This means that
+% the amount \meta{llx} is trimmed from the left side, \meta{lly} from the bottom and \meta{urx} and \meta{ury} from the
+% right and top of the box, respectively.
+% If only one value is given it will be used for all four sites.
+% If only two values are given the first one will be used for the left and right side (llx, urx) and the second for the
+% bottom and top side (lly, ury).
+%
+% \DescribeKey{viewport}'='<llx>~<lly>~<urx>~<ury>
+% This key represents the original \Key{viewport} key of \Macro\includegraphics.
+% It always trims the original content to the given view port independent from its position.
+%
+% \DescribeKey{clip}
+% \DescribeKey{clip}'=true|false'
+% This boolean key represents the original \Key{clip} key of \Macro\includegraphics.
+% It is intended to be used to make \Key{trim} or \Key{viewport} clip the trimmed material.
+% Note that the material will still be part of the output file but is simply not shown.
+% It might be exported from the output file using special tools, so using it to censor classified information is a
+% bad idea.
+%
+%
+% \DescribeKey{Trim}'='<llx>~<lly>~<urx>~<ury>
+% \DescribeKey{Trim}'='<all sites>
+% \DescribeKey{Trim}'='<left/right>~<top/bottom>
+% \DescribeKey{Viewport}'='<llx>~<lly>~<urx>~<ury>
+% The normal \Key{trim} and \Key{viewport} keys are applied on the original content before any resizing or (most) other
+% keys take effect.  This is because for \Macro\includegraphics the trimming is done by the internal graphic driver,
+% while the effects can be applied later (but can also be driver dependent).
+% If the \Key{trim} and \Key{viewport} keys are used multiple times only the last values will be used for the trimming,
+% i.e. the content is only trimmed once. The upper case variants \Key{Trim} and \Key{Viewport} will wrap the content
+% internally in a \Macro\trimbox or \Macro\trimbox*\relax macro which can be applied multiple times, e.g.\ before and
+% after the content is rotated.  These two keys awaits the same format as the original keys. However, the \Key{clip} key
+% has no effect on them.
+%
+%
+% \DescribeKey{Clip}'='<llx>~<lly>~<urx>~<ury>
+% \DescribeKey{Clip}'='<all sites>
+% \DescribeKey{Clip}'='<left/right>~<top/bottom>
+% \DescribeKey{Clip*}'='<llx>~<lly>~<urx>~<ury>
+% The \Key{Clip} key will clip the given amounts from the current content and can be used several times if required.
+% The starred version will use the given coordinates as \Key{viewport}.
+% These keys work by wrapping the content internally in a \Macro\clipbox or \Macro\clipbox*\relax macro.
+%
+%
+%
+% ^^A )))2
+% \subsection{Margins and Vertical Spacing} ^^A (((2
+% \vspace{-\baselineskip}
+%
+% \DescribeKey{margin}'='<all sites>
+% \DescribeKey{margin}'='<left/right>~<top/bottom>
+% \DescribeKey{margin}'='<llx>~<lly>~<urx>~<ury>
+% This key can be used to add a margin (white space) around the content. It can be seen as the opposite of \Key{Trim}.
+% The original baseline of the content is preserved because \meta{lly} is added to the depth.
+% It is also available under the alternative name \Key{padding}, which can be used to more visually distinguish an inner
+% margin from an outer margin e.g.\ if a frame is added.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   Before \adjustbox{padding=1ex 2ex 3ex 4ex,frame,margin=1ex 2ex 3ex 4ex}{Text} After
+%   \end{examplecode}
+% \end{example}
+%
+% \DescribeKey{margin*}'='<all sites>
+% \DescribeKey{margin*}'='<left/right>~<top/bottom>
+% \DescribeKey{margin*}'='<llx>~<lly>~<urx>~<ury>
+% This starred version is almost identical to the normal \Key{margin} key, but also raises the content by the \MacroArgs<lly>
+% amount, so that the original depth is preserved instead of the original baseline.
+% Note that while \Key{margin} is basically the opposite of \Key{Trim}, \Key{margin*} is not the opposite of \Key{Trim*}.
+% Instead it also takes the same values as the unstarred key and not viewport values like \Key{Trim*}.
+% An alternative name of \Key{margin*} is \Key{padding*}.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   Before \adjustbox{padding*=1ex 2ex 3ex 4ex,frame,margin*=1ex 2ex 3ex 4ex}{Text} After
+%   \end{examplecode}
+% \end{example}
+%
+%
+% \DescribeKey{vspace}'='<above/below>
+% \DescribeKey{vspace}'='<above>~<below>
+% The \Key{vspace} key adds a vertical space before and after the content.
+% This is done by adding paragraph breaks and \Macro\vspace macros, which will yield better spacing between
+% paragraphs then when using the \Key{margin} key.
+% However \Key{vspace} forces vertical mode around the content. Adding further keys after \Key{vspace} will force
+% restricted horizontal mode again and the vertical space will be ignored. For this situation the \Key{margin} key is
+% better suited.
+%
+% \DescribeKey{vspace*}'='<above/below>
+% \DescribeKey{vspace*}'='<above>~<below>
+% Identical to \Key{vspace} but uses \Macro\vspace'*' instead.
+% The difference is that the vertical space is not ignored at page breaks, but its full amount is always forced.
+%
+%
+% ^^A )))2
+% \subsection{Minimum and Maximum Size} ^^A (((2
+% The following keys allow to set a minimum or maximum size.
+% The content will be scaled down or up if required.
+%
+%
+% \DescribeKey{min width}'='<width>
+% \DescribeKey{max width}'='<width>
+% \DescribeKey{min height}'='<height>
+% \DescribeKey{max height}'='<height>
+% \DescribeKey{min totalheight}'='<total height>
+% \DescribeKey{max totalheight}'='<total height>
+% These keys allow to set the minimum and maximum width, height or totalheight of the content.
+% The current size of the content is measured and the content is resized if the constraint is not already met,
+% otherwise the content is unchanged. Multiple usages of these keys are checked one after each other, and therefore
+% it is possible that a later one is undoing the size changes of an earlier one.
+% A good example is \Key{max width}'='\AlsoMacro\textwidth which will limit large content to the text width but will not affect smaller
+% content.
+%
+% \DescribeKey{min size}'='{<width>}{<height>}
+% \DescribeKey{max size}'='{<width>}{<height>}
+% \DescribeKey{min totalsize}'='{<width>}{<total height>}
+% \DescribeKey{max totalsize}'='{<width>}{<total height>}
+% These keys allow to specify the minimum or maximum width and (total)height of the content together,
+% which is more efficient than using the width and (total)height keys described earlier.
+%
+%
+%
+% \DescribeMacro\minsizebox{<width>}{<height>}{<content>}
+% \DescribeMacro\minsizebox'*'{<width>}{<totalheight>}{<content>}
+% This macro is like \Macro\resizebox of the \pkg{graphics/x} package, but only resizes the content if its natural size is smaller
+% than the given \meta{width} or \meta{height}.
+% If only one value should be set the other one can be replaced by "!".
+% If required the content is scaled up so that the width and height is equal or larger than the given values, but does not change
+% the aspect ratio.
+% The star variant uses the total height instead of only the height.
+% This macro is used internally for the \Key{min width}, \Key{min height}, \Key{min totalheight} and \Key{min totalsize} keys.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \minsizebox{3cm}{2ex}{Some Text} which will be enlarged
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \minsizebox{!}{4ex}{\fbox{Some Text}} which will be enlarged
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \minsizebox*{!}{4ex}{\fbox{Some Text}} which will be enlarged
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \minsizebox{3cm}{!}{Some Text} which will be enlarged
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \minsizebox{1cm}{1ex}{Some Text}, already large enough
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeMacro\maxsizebox{<width>}{<height>}{<content>}
+% \DescribeMacro\maxsizebox'*'{<width>}{<totalheight>}{<content>}
+% This macro is like \Macro\resizebox of the \pkg{graphics/x} package, but only resizes the content if its natural size is larger
+% than the given \meta{width} or \meta{height}.
+% If only one value should be set the other one can be replaced by "!".
+% If required the content is scaled down so that the width and height is equal or smaller than the given values, but does not change
+% the aspect ratio.
+% The star variant uses the total height instead of only the height.
+% This macro is used internally for the \Key{max width}, \Key{max height}, \Key{max totalheight} and \Key{max totalsize} keys.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \maxsizebox{1cm}{1ex}{Some Text} which will be reduced
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \maxsizebox{!}{1ex}{\fbox{Some Text}} which will be reduced
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \maxsizebox*{!}{1ex}{\fbox{Some Text}} which will be reduced
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \maxsizebox{1cm}{!}{Some Text} which will be reduced
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \maxsizebox{3cm}{1cm}{Some Text}, already small enough
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{warn width}
+% \DescribeKey{warn width}=<max width>
+% If this key is used the current width of the content is measured and compared with the given maximum width (default is
+% \Macro\linewidth).
+% If the content is wider than this value by more than the \TeX\ length \Macro\hfuzz\relax (by default 0.1pt)
+% an \emph{Overfull hbox} warning is produced.
+% The warning will include the source code position and the information that it was an |adjustbox| not a normal
+% paragraph:
+% \par\smallskip\par
+% {\ttfamily Overfull |\hbox| (X.Ypt too wide) in adjustbox at line N}
+%
+% {\ttfamily Overfull |\hbox| (X.Ypt too wide) in adjustbox at lines N-M}
+% \par\smallskip\par\noindent
+% Note that this key is not able to take any horizontal space before the |adjustbox|
+% into account. This includes a paragraph indention which might be present with \Macro\adjustbox.
+%
+% This key is useful to be used before the horizontal alignment keys which change the official width of the content
+% and prevent the normal \emph{Overfull} warnings to take affect.
+%
+%
+% ^^A )))2
+% \Needspace*{8\baselineskip}
+% \subsection{Scaling} ^^A (((2
+% \vspace{-\baselineskip}
+%
+% \DescribeKey{scale}'='<factor>
+% \DescribeKey{scale}'='{<h-factor>}{<v-factor>}
+% The normal \Key{scale} key of \pkg{graphicx} only allows for one scale factor which is used for both the horizontal and vertical scaling.
+% With \pkg{adjustbox} it is also possible to provide the horizontal and vertical scale factors separately.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{scale=2}{Some text!}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{scale={2}{1}}{Some text!}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{reflect}
+% This key reflects the content by using \Macro\reflectbox internally, which is identical to \Macro\scalebox{-1}[1],
+% i.e.\ this key is identical to \Key{scale}'='{-1}{1}.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{reflect}{Some text!}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeMacro\scalebox{<h-factor>}[<v-factor>]{<content>}
+% \DescribeMacro\reflectbox{<content>}
+% These macros is provided by the loaded \pkg{graphicx} package and only mentioned here for the sake of completeness.
+% See the |grfguide| for more details.
+%
+%
+% ^^A )))2
+% \subsection{Frame} ^^A (((2
+% The following keys can be used to draw frames around the content.
+%
+% \DescribeKey{fbox}
+% \DescribeKey{fbox}'='<rule width>
+% \DescribeKey{fbox}'='<rule width>~<sep>
+% \DescribeKey{fbox}'='<rule width>~<sep>~<margin>
+% Draws a framed box around the content like \Macro\fbox would do.
+% Using the optional space separated values the rule width, the separation (inner padding) and the outer margin can be set.
+% If not they default to the values \Macro\fbox uses by default: \Macro\fboxrule, \Macro\fboxsep and zero margin.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{fbox}{Like \cs{fbox}}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{fbox=1pt}{With 1pt rule width}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{fbox=1pt 2pt}{With 1pt rule width and 2pt separation}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{fbox={\fboxrule} 1pt}{With normal rule width and 1pt separation}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{fbox=1pt 1pt 1pt}{With 1pt for rule width, separation and outer margin}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{frame}
+% \DescribeKey{frame}'='<rule width>
+% \DescribeKey{frame}'='<rule width>~<sep>
+% \DescribeKey{frame}'='<rule width>~<sep>~<margin>
+% The \Key{frame} key as the same effect as the \Key{fbox} key but is modeled after \LaTeX's \Macro\frame macro (not the version \cls{beamer} defines).
+% This means it adds a tight frame with zero separation around the content by default. Besides that it accepts the same space separated values.
+% This key is useful to easily add a tight frame around images where the normal separation wouldn't fit.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{frame}{Tight box}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{cfbox}'='<color>
+% \DescribeKey{cfbox}'='<color>~<rule width>
+% \DescribeKey{cfbox}'='<color>~<rule width>~<sep>
+% \DescribeKey{cfbox}'='<color>~<rule width>~<sep>~<margin>
+% Identical to \Key{fbox} but uses the given color for the frame.
+% The \pkg{xcolor} package must be loaded manually in order for this key to work.
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{cfbox=blue 1pt}{Like a blue \cs{fbox} with \cs{fboxrule}=1pt}
+%   \end{examplecode}
+% \end{example}
+%
+%
+% \DescribeKey{cframe}'='<color>
+% \DescribeKey{cframe}'='<color>~<rule width>
+% \DescribeKey{cframe}'='<color>~<rule width>~<sep>
+% \DescribeKey{cframe}'='<color>~<rule width>~<sep>~<margin>
+% Identical to \Key{frame} but uses the given color for the frame.
+% The \pkg{xcolor} package must be loaded manually in order for this key to work.
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{cfbox=blue!50!green}
+%       {Like a blue and green \cs{frame}}
+%   \end{examplecode}
+% \end{example}
+%
+%
+% ^^A )))2
+% \subsection{Vertical Alignment} ^^A (((2
+% The following keys can be used to adjust the vertical alignment and size of the content.
+%
+% \DescribeKey{valign}'='<letter>
+% This key allows to vertically align the content to the top, middle and bottom.  The uppercase letters |T|, |M| and |B|
+% align to the content top (i.e. all depth, no height), the geometric, vertical center (equal height and depth) and to
+% the bottom (all height, no depth), respectively.  This allows the alignment of content of different size, but will not
+% result in good alignment with text.  The lowercase letters |t|, |m| and |b| are aligning the content again to the top,
+% center and bottom but take the current text size in account.
+% The |t| letter leaves a certain height given by the macro\footnote{A macro and not a length is used to allow for
+% font size relative values like \texttt{1ex}.} \Macro\adjboxvtop\relax
+% (by default set to the height of \Macro\strut\relax, i.e.\ |\ht\strutbox|, which is |.7\baselineskip|),
+% while |b| sets a certain depth given (as negative length) by the macro \Macro\adjboxvbottom\relax
+% (by default equal to the (negated) \Macro\strut depth, i.e.\ |-\dp\strutbox|, which is |.3\baselineskip|).
+% The |m| letter will center towards the vertical center of the text line which is determined by the macro
+% \Macro\adjboxvcenter\relax (by default \texttt{1ex}).
+%
+% The following table shows the different alignments for three different sized blocks:
+%
+% \bigskip
+% \begingroup
+% \def\vr{%
+%     \unskip
+%     \tikz [gray] {\useasboundingbox (0,0);
+%       \draw (-13.5em,0) -- (2.25em,0);
+%       \draw (-13.5em,\adjboxvcenter) -- (2.25em,\adjboxvcenter);
+%     }%
+%     \unskip\ignorespaces
+% }%
+% \centerline{%
+% \begin{tabular}{cccm{2em}}
+%  \toprule
+%   \texttt{T} & \texttt{M} & \texttt{B} & Text \\
+%   \adjustbox{valign=T}{\textcolor{red}{\rule{1em}{2em}\unskip}}\unskip
+%   \adjustbox{valign=T}{\textcolor{green}{\rule{1em}{3em}\unskip}}\unskip
+%   \adjustbox{valign=T}{\textcolor{blue}{\rule{1em}{1ex}\unskip}} &
+%   \adjustbox{valign=M}{\textcolor{red}{\rule{1em}{2em}\unskip}}\unskip
+%   \adjustbox{valign=M}{\textcolor{green}{\rule{1em}{3em}\unskip}}\unskip
+%   \adjustbox{valign=M}{\textcolor{blue}{\rule{1em}{1ex}\unskip}} &
+%   \adjustbox{valign=B}{\textcolor{red}{\rule{1em}{2em}\unskip}}\unskip
+%   \adjustbox{valign=B}{\textcolor{green}{\rule{1em}{3em}\unskip}}\unskip
+%   \adjustbox{valign=B}{\textcolor{blue}{\rule{1em}{1ex}\unskip}} &
+%   Mxy \newline \mbox{\vr Mxy}\newline Mxy \\
+%  \midrule
+%   \texttt{t} & \texttt{m} & \texttt{b} & Text \\
+%   \adjustbox{valign=t}{\textcolor{red}{\rule{1em}{2em}\unskip}}\unskip
+%   \adjustbox{valign=t}{\textcolor{green}{\rule{1em}{3em}\unskip}}\unskip
+%   \adjustbox{valign=t}{\textcolor{blue}{\rule{1em}{1ex}\unskip}} &
+%   \adjustbox{valign=m}{\textcolor{red}{\rule{1em}{2em}\unskip}}\unskip
+%   \adjustbox{valign=m}{\textcolor{green}{\rule{1em}{3em}\unskip}}\unskip
+%   \adjustbox{valign=m}{\textcolor{blue}{\rule{1em}{1ex}\unskip}} &
+%   \adjustbox{valign=b}{\textcolor{red}{\rule{1em}{2em}\unskip}}\unskip
+%   \adjustbox{valign=b}{\textcolor{green}{\rule{1em}{3em}\unskip}}\unskip
+%   \adjustbox{valign=b}{\textcolor{blue}{\rule{1em}{1ex}\unskip}} &
+%   Mxy \newline \mbox{\vr Mxy}\newline Mxy \\
+%  \bottomrule
+% \end{tabular}}
+% \endgroup
+%
+%
+% \DescribeKey{raise}'='<amount>
+% \DescribeKey{raise}'='{<amount>}{<height>}
+% \DescribeKey{raise}'='{<amount>}{<height>}{<depth>}
+% This key uses
+% \Macro\raisebox{<amount>}{\ldots} to raise the content upwards for the given \meta{amount} (length).
+% A negative length moves the content down.
+% The two optional arguments of \Macro\raisebox{<amount>}[<height>][<depth>]{\ldots}\relax are also available
+% as optional brace arguments. They can be used to set the official height and depth of the content.
+% This is also possible using the \Key{set height} and \Key{set depth} keys.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   Is \adjustbox{raise=1ex}{higher}
+%   than the normal text
+%   \end{examplecode}
+%   \begin{examplecode}
+%   Is \adjustbox{raise={1ex}{\height}}{higher}
+%   than the normal text but sill has
+%   its original official height
+%   \end{examplecode}
+%   \begin{examplecode}
+%   Is \adjustbox{raise={1ex}{1ex}{0pt}}{higher and
+%   \rotatebox{-90}{deeper}} but with limited official
+%   height and no depth.
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{set height}'='<height>
+% This sets the official height of the content without actual changing it. This can be seen as a form of trimming.
+% It uses the same internal code as\\
+% \Macro\raisebox{'0pt'}[<height>]{<content>}.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{set height=.5\height}
+%       {\shortstack{some stacked\\content}}
+%   \end{examplecode}
+% \end{example}
+%
+% \DescribeKey{set depth}'='<depth>
+% This sets the official depth of the content without actual changing it. This can be seen as a form of trimming.
+% It uses the same internal code as\\
+% \Macro\raisebox{'0pt'}['\height'][<depth>]{<content>}.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{set depth=0pt}
+%       {\shortstack{some stacked\\content
+%       with \raisebox{-1ex}{depth}}}
+%   \end{examplecode}
+% \end{example}
+%
+% \DescribeKey{set vsize}'='{<height>}{<depth>}
+% This sets the official height of depth of the content without actual changing it.
+% This key is simply the combination of \Key{set height} and \Key{set depth}.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{set vsize={2pt}{1pt}}
+%       {\shortstack{some stacked\\content
+%       with \raisebox{-1ex}{depth}}}
+%   \end{examplecode}
+% \end{example}
+%
+%
+% ^^A )))2
+% \subsection{Horizontal Alignment} ^^A (((2
+% The following keys can be used to adjust the horizontal alignment and size of the content.
+%
+% \DescribeKey{center}
+% \DescribeKey{center}'='<width>
+% This key places
+% the content in a horizontal box which is by default \Macro\linewidth wide (i.e.\ as wide as a normal text paragraph)
+% and centers it in it. The effect is very similar to \Macro\centerline. The original content is unchanged, but simply identical
+% white space is added as a left and right margin. This is useful if the content is a figure or table and can be used as a replacement
+% for \Macro\centering. One important difference is that the content will then have the given width which might influence (sub-)caption
+% placement.
+% If the content is wider than the available width it will stick out on both sides equally without causing an overfull hbox warning.
+% Note that when \Macro\adjustbox paragraph is used at the beginning of a paragraph the normal paragraph indention is added, which
+% will push the while box to the right and might cause an overfull line. In such cases a \Macro\noindent must be added beforehand.
+% The \env{adjustbox} environment already uses this macro.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{center}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{center=5cm}{Some content}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{right}
+% \DescribeKey{right}'='<width>
+% Like \Key{center} this key
+% places the content in a box with the given width (by default \Macro\linewidth) but right aligns it.
+% If the content is wider than the available width it will stick out into the left side without causing an overfull hbox warning.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{right}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{right=5cm}{Some content}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{left}
+% \DescribeKey{left}'='<width>
+% Like \Key{center} this key
+% places the content in a box with the given width (by default \Macro\linewidth) but left aligns it.
+% If the content is wider than the available width it will stick out into the right side without causing an overfull hbox warning.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{left}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{left=5cm}{Some content}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{inner}
+% \DescribeKey{inner}'='<width>
+% Like \Key{center}, \Key{left} and \Key{right} this key
+% places the content in a box with the given width (by default \Macro\linewidth) but aligns it towards the inner margin.
+% If the content is wider than the available width it will stick into the outer margin without causing an overfull hbox warning.
+% In |twoside| mode this key is equal to \Key{left} for odd pages and equal to \Key{right} for even pages.
+% For |oneside| mode it is equal to \Key{left}.
+% Note that the page-is-odd test might not always lead to correct results for some material close to a page boundary, because \TeX\
+% might not have decided on which page it will be placed. This can be improved by loading the \pkg{changepage} package with the
+% \opt{strict} option, which uses a reference to determine the correct page number (and requires the usual additional compiler run).
+%
+%
+% \DescribeKey{outer}
+% \DescribeKey{outer}'='<width>
+% Identical to \Key{inner} but aligns the content towards the outer margin.
+% For |oneside| mode it is equal to \Key{right}.
+% If the content is wider than the available width it will stick into the outer inner without causing an overfull hbox warning.
+%
+%
+% \DescribeMacro\innersidebox[<width>]{<content>}
+% \vspace{-1.5\baselineskip}
+% \DescribeEnv[<content>]{innersidebox}[<width>]
+% Macro and environment version of the \Key{inner} key. The optional width argument defaults to \Macro\linewidth.
+% Both include a \Macro\noindent to avoid paragraph indention. If an paragraph indention is wanted it can be created by
+% placing a |\mbox{}| or the identical |\null| macro before it.
+%
+%
+% \DescribeMacro\outersidebox[<width>]{<content>}
+% \vspace{-1.5\baselineskip}
+% \DescribeEnv[<content>]{outersidebox}[<width>]
+% Macro and environment version of the \Key{outer} key. The optional width argument defaults to \Macro\linewidth.
+% Both include a \Macro\noindent to avoid paragraph indention. If an paragraph indention is wanted it can be created by
+% placing a |\mbox{}| or the identical |\null| macro before it.
+%
+%
+% \subsection*{Lapping} ^^A (((3
+% The following features can be used to make the content lap over its left or right boundary. This is basically the same
+% as trimming, but provides a different, more dedicated interface.
+%
+%
+% \DescribeKey{lap}'='<lap amount>
+% \DescribeKey{lap}'='{<length>}{<lap amount>}
+% This key will make the content lap over the surrounding elements to the right or left by the given amount..
+% A positive amount will make the content lap over to the right
+% and a negative one to the left. The optional \meta{length} argument allows to set the final width.
+% If not used the resulting width will be the original width minus the absolute lap amount.
+% This key internally uses \Macro\lapbox{<lap amount>}{\ldots} and \Macro\lapbox[<length>]{<lap amount>}{\ldots}, respectively.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{lap=.5\width}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{lap=-.5\width}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{lap=\width}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{lap=-\width}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{lap={\width}{\width}}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{lap={\width}{-\width}}{Some content}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{rlap}
+% \DescribeKey{llap}
+% This makes the content to be officially 0pt wide and lap over to the right or left, respectively, like the \LaTeX\ macros \Macro\rlap and \Macro\llap do.
+% These are shortcuts for \Key{lap}'='\AlsoMacro\width and \Key{lap}'=-'\AlsoMacro\width, respectively. The values for these keys are ignored and should not be used.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{rlap}{Some content}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{llap}{Some content}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeMacro\lapbox[<width>]{<lap amount>}{<content>}
+% This macro is a generalisation of the \LaTeX\ core macros \Macro\rlap{<content>} and \Macro\llap{<content>} which lap the
+% text to the right or left without taking any official space. The \Macro\lapbox macro can be used to only partially lap
+% the content to the right (positive amount) or left (negative amount). As with all macros of this package the original width
+% can be references using \Macro\width. The resulting official width of the box is normally the original width minus the absolute
+% lap amount. However, it can also be set explicitly using the option argument.
+% It is also possible to use lap amount which absolute values are larger than the original width. In this case the resulting
+% official width will be zero by default and the content will padded with the required white space.
+% Note that the lap amount always states the distance between the right side of the official box and the right side of the actual
+% content for positive amounts or the distance between the left side of the official box and the left side of the actual content
+% for negative values.
+%
+% \begin{examples}
+%   General lapping:
+%   \begin{examplecode}
+%   \lapbox{1cm}{Some Text}
+%   \end{examplecode}
+%   \vspace{-2\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox{-1cm}{Some Text}
+%   \end{examplecode}
+%   \vspace{-2\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox[4cm]{1cm}{Some Text}
+%   \end{examplecode}
+%   \vspace{-2\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox[3cm]{2cm}{Some Text}
+%   \end{examplecode}
+%   \vspace{\smallskipamount}%
+%   Like \Macro\rlap:
+%   \vspace{-\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox[0pt]{\width}{Some Text}
+%   \end{examplecode}
+%   \vspace{\smallskipamount}%
+%   Like \Macro\llap:
+%   \vspace{-\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox[0pt]{-\width}{Some Text}
+%   \end{examplecode}
+%   \vspace{\smallskipamount}%
+%   A centering \Macro\clap macro can be achieved using:
+%   \vspace{-\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox[0pt]{-.5\width}{Some Text}
+%   \end{examplecode}
+%   \vspace{-2\smallskipamount}%
+%   \begin{examplecode}
+%   \lapbox[0pt]{.5\width}{Some Text}
+%   \end{examplecode}
+%
+% \end{examples}
+%
+%
+% ^^A )))3
+% ^^A )))2
+% \subsection{Background} ^^A (((2
+% \vspace{-\baselineskip}
+%
+% \DescribeKey{bgcolor}'='<color>
+% \DescribeKey{bgcolor}'='{<model>}{<color>}
+% This key adds a colored background to the content. The \pkg{xcolor} package (or \pkg{color} or \pkg{xxcolor}) needs to be loaded
+% as well in order for this to work. The value is passed to an internal \Macro\color macro.
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{bgcolor=blue}{Text with blue background.}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{bgcolor={rgb}{0 0 1}}{Text with blue background in the RGB color model.}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{margin=1ex,bgcolor=green}{green with a little more margin}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \adjustbox{margin=1ex,bgcolor=green,margin=1pt,bgcolor=yellow}{Emulation of colored frame}
+%   \end{examplecode}
+% \end{examples}
+%
+% \DescribeKey{bgcolor*}'='<color macro>
+% Like \Key{bgcolor} but awaits a full color macro as value. This allows to use other macros as \Macro\color like \Macro\blendcolors.
+% See the \pkg{xcolor} manual for more details.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \color{blue}Blue text
+%   \adjustbox{bgcolor*=\blendcolors{!10!yellow}\color{.}}{with a yellow-bluish background}
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \color{green}Green text
+%   \adjustbox{bgcolor*=\blendcolors{!10!yellow}\color{.}}{with a yellow-greenish background}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{bgimage}'='<image filename>
+% \DescribeKey{bgimage}'='{<key=value pairs for image>}{<image filename>}
+% Adds a background image to the content. The image is stretched if required to fit exactly to the content.
+% It is also possible to provide \Macro\adjustbox or \Macro\includegraphics keys to modify the image (before the resizing is done).
+%
+% \DescribeMacro{\bgimagebox}[<key=value pairs>]{<image filename>}
+% Standalone version of the \Key{bgimage} key. Also available as \env{bgimagebox} environment.
+%
+%
+% ^^A )))2
+% \subsection{Density / Pixel size} ^^A (((2
+% The following keys allow to adjust the effective length of |pdftex| special |px| (pixel) unit.
+% This can be required for images which do not have the correct DPI meta-data included.
+%
+%
+% \DescribeKey{dpi}'='<number (dots per inch)>
+% The \Key{dpi} key provides a simple interface to set the pixel size to the given DPI (dots per inch) value.
+% For |pdflatex| the length unit |px| can be used to specify pixels. However, the equivalent dimension (length) of one pixel must be
+% set using the \Macro\pdfpxdimen length register. To set a specific DPI value this length must be set using
+% \Macro\setlength\AlsoMacro\pdfpxdimen{'1in/'<dots>}, which is done by the \Key{dpi}'='<dots> key.
+% Note that the key won't affect the setting for the content but only for the further used keys.
+% However, it is possible to use \Macro\setkeys{adjbox}{'dpi='<number>} inside the content or anywhere else in the document to
+% set \Macro\pdfpxdimen using this interface.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{dpi=72,trim=10px,frame}{%
+%       \setkeys{adjbox}{dpi=72}%
+%       \textcolor{green}{\rule{50px}{50px}}%
+%   }
+%   \end{examplecode}
+% \end{example}
+%
+% \DescribeKey{pxdim}'='<length>
+% Alternatively
+% to the \Key{dpi} key the \Macro\pdfpxdimen length can be set directly to the given value. Afterwards |1px| will stand
+% for the given \meta{length}.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{pxdim=2pt,trim=2px,frame}
+%       {\textcolor{green}{\rule{20pt}{20pt}}}
+%   \end{examplecode}
+% \end{example}
+%
+%
+% ^^A )))2
+% \subsection{Minipage or other inner environments which change the processing of the content}\label{sec:inner} ^^A (((2
+% The following keys set the way the content is processed before it is stored it in a box.
+% These keys will overwrite each other and only the latest used key will take effect.
+% Because they affect the inner content directly their order relative to other, normal keys is not meaningful.
+% Also they are only defined for \env{adjustbox} but do not apply for \Macro\includegraphics.
+% Because they are therefore only used inside a mandatory argument and never in an optional these keys allow for optional bracket arguments.
+%
+% \DescribeKey{minipage}'='<width>
+% \DescribeKey{minipage}'='[<position>][<height>][<inner position>]{<width>}
+% This key wraps the inner content in a \env{minipage} with the given \meta{width} before it is stored as horizontal box.
+% Its order relative to other keys is not meaningful (except that future keys of this sub-section will overwrite it).
+% This allows for line breaks and footnotes in the \env{adjustbox}.
+% All optional arguments of \env{minipage} are supported. I only the width is given it does not have to be enclosed in braces.
+% The \meta{position} argument must be "t" for top baseline, "b" for bottom baseline and "c" for center alignment relative to other
+% text, i.e.\ defines the resulting baseline. If a \meta{height} is defined the \meta{inner position} defaults to \meta{position} but
+% can also be "s" to stretch the content over the whole height. This requires the content to include some vertical stretchable material.
+% Note that all length arguments can include arithmetic expressions like for other keys.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{minipage=5cm,angle=-10}{%
+%      Some example code which will
+%      be automatically broken or can include \\
+%      line breaks\footnote{AND footnotes!!}\\
+%      or verbatim \verb+@%^&}_+!%
+%   }
+%   \end{examplecode}
+%   \begin{examplecode}
+%   Before \begin{adjustbox}{minipage=[b][3cm][s]{5cm}}
+%      Some example code
+%
+%      \vfill
+%      with line breaks\footnote{AND footnotes!!}
+%
+%      \vfill
+%      or verbatim \verb+@%^&}_+!%
+%   \end{adjustbox} After
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{tabular}'='[<position>]{<column specification>}
+% \DescribeKey{tabular*}'='[<position>]{<width>}{<column specification>}
+% \DescribeKey{array}'='[<position>]{<column specification>}
+% Places the content in a \env{tabular}, \env{tabular*} or \env{array} environment, respectively.
+% These keys require different implementations for macro (\Macro\adjustbox) and environment mode (\env{adjustbox} environment) in order to insert
+% the end code correctly. Note that the environment mode is more efficient and fully stable, while the macro mode requires the last row to end with
+% an explicit |\\| (which can be followed by \Macro\hline or any other macro which uses \Macro\noalign internally). In macro mode the |\\| is internally redefined
+% to check for the closing brace. While this was successful tested for normal usages it might still cause issues with unusual or complicated cases.
+% Note that these environments are taken as part of the content and so the usage of arithmetic expressions for length arguments is not supported.
+%
+% \begin{examples}
+%   \begin{examplecode}
+%   \adjustbox{tabular=lll}{%
+%                   \hline
+%       A & B & C \\\hline
+%       a & b & c \\\hline
+%   }
+%   \end{examplecode}
+%   \begin{examplecode}
+%   \begin{adjustbox}{tabular=lll}
+%       A & B & C \\
+%       a & b & c
+%   \end{adjustbox}
+%   \end{examplecode}
+% \end{examples}
+%
+%
+% \DescribeKey{stack}
+% \DescribeKey{stack}'='<horizontal alignment>
+% \DescribeKey{stack}'='{<horizontal alignment>}{<vertical alignment>}
+% \Descsep
+% \DescribeMacro\stackbox!\optionaloff![<horizontal alignment>][<vertical alignment>]{<content>}
+% \Descsep
+% \DescribeEnv[<content>]{stackbox}[<horizontal alignment>][<vertical alignment>]
+% The \Key{stack} key and its corresponding macro and environment can be used to stack multiple lines similar to the \Macro\shortstack macro, but
+% both the horizontal and vertical alignment can be selected by a single letter each. Also a proper baseline skip is inserted.
+% This is implemented using the \env{varwidth} environment which is based on the \env{minipage} environment.
+% Its maximal width arguments is fixed internally to \Macro\linewidth.
+%
+% Possible horizontal alignments are: "l" (left), "r" (right), "c" (centered, default), "j" (justified).
+% Possible vertical alignments are the same as for \env{minipage}: "t" (top baseline), "b" (bottom baseline, default), "c" (vertical centered).
+% Because these arguments are always single letters the "{ }" around them can be skipped, so that the value can simple be two concatenated letters.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   .\adjustbox{stack}{A\\B\\CC}.
+%   \end{examplecode}
+%   \begin{examplecode}
+%   .\adjustbox{stack=r}{A\\B\\CC}.
+%   \end{examplecode}
+%   \begin{examplecode}
+%   .\adjustbox{stack=ct}{A\\B\\CC}.
+%   \end{examplecode}
+% \end{example}
+%
+%
+% \DescribeKey{innerenv}'='<environment name>
+% \DescribeKey{innerenv}'='{<environment name>}<environment options>
+% Wraps the inner content in the given \meta{environment} before it is stored as horizontal box.
+% It should be kept in mind that there is some internal code between the begin of the environment and the content. For this reason
+% a \env{tabular}, \env{array} or similar environment will not work here, because that code will be taken as part of the first cell.
+% Note that such a environment is taken as part of the content and so the usage of arithmetic expressions for length arguments is not supported.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \newenvironment{myenv}[2][]{Before [#1](#2)}{After}
+%   \adjustbox{innerenv={myenv}[ex]{amble}}{Content}
+%   \end{examplecode}
+%   \newenvironment{myenv}[2][]{Before [#1](#2)}{After}
+%   \begin{examplecode}
+%   \adjustbox{innerenv={myenv}{amble}}{Content}
+%   \end{examplecode}
+% \end{example}
+%
+%
+% \DescribeKey{innercode}'='{<begin code>}{<end code>}
+% Places the given code before and after the inner content before it is stored as horizontal box.
+% Note that such code is taken as part of the content and so the usage of arithmetic expressions for length arguments is not supported.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{innercode={\color{green}}{!}}{Content}
+%   \end{examplecode}
+% \end{example}
+%
+% ^^A )))2
+% \subsection{Floats and non-float replacements} ^^A (((2
+% The following keys can be used to turn an adjusted box into a float or a non-floating replacement which also allows
+% for a caption. These keys must be used last and no other normal keys must be used afterwards, otherwise an error will
+% occur because the added floating environment is boxed again.
+%
+%
+% \DescribeKey{caption}=<caption text>
+% \DescribeKey{caption}=[<short caption>]{<long caption>}
+% Defines a caption which will be used by a following \Key{figure}, \Key{float} or \Key{nofloat} key.
+% The position of the caption defaults to top for a |table| (non-)float and bottom for every other type.
+%
+% \DescribeKey{captionabove}=<caption text>
+% \DescribeKey{captionabove}=[<short caption>]{<long caption>}
+% Like the \Key{caption} key but forces the placement of the caption above the content.
+% The vertical skip above and below a normal below caption are reversed in this case to get proper
+% spacing. However, this is not done if the \pkg{caption} package is loaded.
+% It is recommended to load this package with the |tableposition=above| option.
+%
+%
+% \DescribeKey{captionbelow}=<caption text>
+% \DescribeKey{captionbelow}=[<short caption>]{<long caption>}
+% Like the \Key{caption} key but forces the placement of the caption below the content.
+%
+%
+% \DescribeKey{label}=<label>
+% Defines a label which will be used by a following \Key{figure}, \Key{float} or \Key{nofloat} key.
+%
+%
+% \DescribeKey{figure}
+% \DescribeKey{figure}=<placement>
+% Turns the adjusted box into a \env{figure}.
+% A previously used \Key{caption} and \Key{label} will be added.
+% This is a specialised version of \Key{float}={figure}.
+%
+%
+% \DescribeKey{float}=<float type>
+% \DescribeKey{float}={<float type>}[<position>]
+% Turns the adjusted box into a float of the given type, i.e.\ |figure|, |table| or any other custom defined float.
+% A previously used \Key{caption} and \Key{label} will be added.
+%
+%
+% \DescribeKey{nofloat}=<float type>
+% This will add a non-floating replacement of the given float type (|figure|, |table|, etc.).
+% The will place the content always at the current
+% position which can lead to bad page-breaking. A caption will be in the same format as for real floats of the same
+% type.
+% A previously used \Key{caption} and \Key{label} will be added.
+%
+%
+% \DescribeEnv[<content>]{adjnofloat}{<float type>}
+% This environment is used internally by \Key{nofloat} to create a non-floating replacement of the given float type
+% (|figure|, |table|, etc.). It can also be used directly with other code or be redefined to change the
+% behavior of \Key{nofloat}.
+% Any redefinition should include |\def\@captype{#1}| to set the caption type.
+% The environment will be used in plain form, i.e.\ \Macro\adjnofloat\ldots\Macro\endadjnofloat, so
+% if a group is required in a redefinition it should be added manually using \Macro\begingroup and \Macro\endgroup.
+%
+%
+%
+% ^^A )))2
+% \Needspace*{8\baselineskip}
+% \subsection{Adding own Code or Environments} ^^A (((2
+% \vspace{-\baselineskip}
+%
+% \DescribeKey{env}'='<environment name>
+% \DescribeKey{env}'='{<environment name>}<environment options>
+% Adds an \meta{environment} around the content and the already existing code around it which was added by other keys beforehand.
+% Potential \meta{environment options} (or any other code) can follow the environment name if it was set inside braces.
+% At this stage the content is already boxed and format macros won't have any effect on any included text. For this the \Key{innerenv} key needs to be used instead.
+%
+% \DescribeKey{addcode}'='{<code before>}{<code afters>}
+% Adds some \meta{code before} and some \meta{code after} the content and the
+% already existing code around it which was added by other keys beforehand.
+% At this stage the content is already boxed and format macros won't have any effect on any included text.
+%
+% \DescribeKey{appcode}'='<code afterwards>
+% Appends come \meta{code after} the content and the already existing code around it which was added by other keys beforehand.
+% More complex code should be enclosed in braces.
+%
+% \DescribeKey{precode}'='<code before>
+% Prepends come \meta{code afterwards} the content and the already existing code around it which was added by other keys beforehand.
+% More complex code should be enclosed in braces.
+%
+% \DescribeKey{execute}'='<code>
+% Simply executes the code immediately. This is done in the key processing phase and is intended mostly for debugging purposes.
+% Previous (normal) keys won't have an effect yet.
+%
+% \DescribeKey{Execute}'='<code>
+% Simply executes the code immediately. This is done in the key processing phase for inner environments (see \autoref{sec:inner}) and is intended mostly for debugging purposes.
+% Only previously used special keys for modifying the boxing of the content will have an effect yet.  % All other keys are not yet processed.
+%
+%
+% ^^A )))2
+% \subsection{Change or discard content} ^^A (((2
+% \vspace{-\baselineskip}
+%
+% \DescribeKey{phantom}
+% \DescribeKey{phantom}'=h'
+% \DescribeKey{phantom}'=v'
+% This key replaces the content with an empty phantom box of the same dimension.
+% If the "h" or "v" value is used the box will only have the same horizontal size or vertical sizes (height and depth)
+% while using zero for the other dimension(s). For this the standard \LaTeX\ macros \Macro\phantom, \Macro\hphantom and
+% \Macro\vphantom are used internally.
+%
+%
+% \DescribeMacro\phantombox{<width>}{<height>}{<depth>}
+% This macro produces an empty box with the given width, height and depth.
+% It is equivalent to \Macro\phantom{\AlsoMacro\rule['-'<depth>]{<width>}{<height>'+'<depth>}} but more efficient and more user friendly.
+%
+% \begin{example}
+%   \begin{examplecode}
+%   Before \fbox{\phantombox{1cm}{2ex}{1ex}} After
+%   \end{examplecode}
+% \end{example}
+%
+%
+% \DescribeKey{gobble}
+% \DescribeKey{discard}
+% These two keys are aliases and will discard the content after it was fully processed.  Any keys used after one of this
+% keys will operate on an empty content.  These keys can be used in combination of the \Key{gstore ...} keys to only
+% measure but not typeset some content.
+%
+% \DescribeKey{content}'='<new content>
+% This key discards the current content completely after it was fully processed and all earlier keys were applied
+% and sets the content to the given \meta{new content}. This can be used to implement some draft box or censoring
+% features.
+%
+% \newlength\somelengtha
+% \newlength\somelengthb
+% \begin{example}
+%   \begin{examplecode}
+%   \adjustbox{frame,rotate=-30,gstore sizes=\somelengtha{}{}\somelengthb,
+%       content={Censored!},rotate=30,totalheight=\somelengtha,width=\somelengthb,frame}
+%           {The real content}
+%   \end{examplecode}
+% \end{example}
+%
+%
+%
+% ^^A )))2
+% \subsection{Store box content } ^^A (((2
+%
+% \DescribeKey{gstore}'='<\textbackslash boxregister>
+% \DescribeKey{gstore*}'='<\textbackslash boxregister>
+% These keys globally store the current content into the given box register.
+% With the normal version the content is still preserved and can be further adjusted.
+% With the starred version the content will be consumed and further keys will be applied to an empty content.
+%
+% \DescribeKey{gstore width}'='<\textbackslash lengthregister>
+% \DescribeKey{gstore height}'='<\textbackslash lengthregister>
+% \DescribeKey{gstore depth}'='<\textbackslash lengthregister>
+% \DescribeKey{gstore totalheight}'='<\textbackslash lengthregister>
+% These key globally store the width, height, depth and totalheight into a length register, respectively.
+% The content will not be altered by these keys. There are no starred versions like for \Key{gstore}.
+% If the content should only be measured but not typeset the \Key{gobble}/\Key{discard} key can be used afterwards.
+%
+% \DescribeKey{gstore sizes}'='<\textbackslash lengthregister><\textbackslash lengthregister><\textbackslash lengthregister><\textbackslash lengthregister>
+% Stores all four size values (width, height, depth and totalheight) of the content in the given length registers.
+% This key should be used if more than one dimension should be stored, because it is much more efficient than using
+% multiple of the above keys.
+% If a dimension is not required it can be replaced by an empty argument, i.e.\ `|{}|'.
+% Trailing dimensions can be skipped altogether if they are not required.
+%
+%
+% ^^A )))2
+% \subsection{Experimental Keys} ^^A (((2
+% The following features are experimental and may not work correctly yet.
+% At the moment the \pkg{storebox} package must be loaded manually for this keys.
+%
+% \DescribeMacro\splitbox{<split width>}{<split height>}{<content>}
+% This macro boxes the given content and splits it in multiple fragments of the given width and height.
+% This is done row by row starting from the upper left corner. The last column and row can have a smaller size than requested.
+% Every fragment is placed using \Macro\splitboxcmd{<fragment box>} which is empty by default but can be redefined to e.g.\ draw
+% a frame around each fragment. After every row except the last the macro \Macro\splitboxnewline is inserted which defaults to |\\|,
+% but can also be redefined freely. After the last row the macro \Macro\splitboxlastnewline is inserted which defaults to \Macro\splitboxnewline.
+%
+% The \Macro\splitbox content is stored using \Macro\storebox from the \pkg{storebox} package and therefore the whole content should only
+% be stored once in the output file if the format is supported by that package (currently only PDF).
+%
+% \DescribeEnv[<content>]{splitbox}{<split width>}{<split height>}
+% Environment version of \Macro\splitbox.
+%
+% \DescribeKey{split}'='{<split width>}{<split height>}
+% The \Key{split} key can be used with \Macro\adjustbox and uses \Macro\splitbox internally.
+%
+% \DescribeMacro\pagebreakbox{<content>}
+% The \Macro\pagebreakbox macro will split the content into multiple parts so that if fits on the current page.
+% If it is larger than the rest of the current page and the full next page it is broken again until the last part fits on a page.
+% This doesn't take any baselines into account and text line in the content may be split in two.
+% This might be compensated manually by redefining the \Macro\pagebreakboxoffset macro (default: `|\ht\strutbox|'), which adjust the vertical offset
+% of the first part.
+%
+% \DescribeEnv{pagebreakbox}
+% Environment version of \Macro\pagebreakbox.
+%
+% \DescribeKey{pagebreak}
+% The key version of \Macro\pagebreakbox. There should no be any further keys used afterwards, because they will interfere with the page breaks.
+%
+%
+% ^^A )))2
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Defining own Keys} ^^A (((
+% The following macros can be used to define own keys or redefine existing ones.
+%
+% \DescribeMacro\newadjustboxkey{<key>}[<default value>]{<code>}
+% \DescribeMacro\newadjustboxkey*{<key>}[<default value>]{<code>}
+% Defines the new \env{adjustbox} key with the given default value if no value is provided.
+% The value can be accessed inside the code as |#1|
+% Without a default value an error is raised if the value is missing.
+% An error is raised if the key is already defined.
+%
+% The normal form will add the code to the internal token register just before the previous content which is
+% wrapped inside braces: \MacroArgs<code>{<previous content>}. Subsequent keys will receive this as content.
+% The code can therefore read the content as macro argument. If the dimension of the content need to be accessed
+% it should be boxed first using \Macro\collectbox{<code>}. Then the dimension are available using the usual
+% macros and the content can be typeset using \Macro\BOXCONTENT. See the \pkg{collectbox} for additional information.
+%
+% The starred form simply executes the given code in the internal group without changing the token register.
+% In this case the content is not directly accessible and all subsequent keys are not yet processed.
+% This form is useful to locally change settings for the current \Macro\adjustbox macro or \env{adjustbox} environment.
+%
+%
+% \DescribeMacro\renewadjustboxkey{<key>}[<default value>]{<code>}
+% \DescribeMacro\renewadjustboxkey*{<key>}[<default value>]{<code>}
+% Like \Macro\newadjustboxkey but will redefine an existing key.
+% An error is raised if the key is not already defined.
+%
+%
+% \DescribeMacro\provideadjustboxkey{<key>}[<default value>]{<code>}
+% \DescribeMacro\provideadjustboxkey*{<key>}[<default value>]{<code>}
+% Like \Macro\newadjustboxkey but will define the key only if it is not already defined.
+%
+%
+% \DescribeMacro\defadjustboxkey{<key>}[<default value>]{<code>}
+% \DescribeMacro\defadjustboxkey*{<key>}[<default value>]{<code>}
+% Like \Macro\newadjustboxkey but will always define the key independent if it is already defined or not.
+%
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \StopEventually{}
+% \clearpage
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Implementation} ^^A (((
+% \setcounter{lstnumber}{1}
+%
+% \iffalse
+%<*adjustbox.sty>
+% \fi
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Package header, options and dependencies} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \begin{macrocode}
+%<!COPYRIGHT>
+\ProvidesPackage{adjustbox}[%
+%<!DATE>
+%<!VERSION>
+%<*DRIVER>
+    2099/01/01 develop
+%</DRIVER>
+    Adjusting TeX boxes (trim, clip, ...)]
+%    \end{macrocode}
+%
+% Load the packages required for the options.
+%    \begin{macrocode}
+\RequirePackage{xkeyval}
+\RequirePackage{adjcalc}
+%    \end{macrocode}
+%
+% Declare normal options.
+%    \begin{macrocode}
+\def\adjbox@fam{adjbox}
+\DeclareOptionX<Adjbox>{export}{\def\adjbox@fam{Gin}}
+\DeclareOptionX<Adjbox>{Export}{\AtEndOfPackage{\let\includegraphics\adjincludegraphics}}
+\DeclareOptionX<Adjbox>{patch}{%
+    \PackageWarning{adjustbox}{%
+         The 'patch' option is now deprecated.\MessageBreak
+         Use the new \string\adjustimage\space or \string\adjincludegraphics\space macros instead%
+         \@gobble
+    }%
+}
+\DeclareOptionX<Adjbox>{minimal}{\let\adjustbox@minimal\endinput}
+%    \end{macrocode}
+%
+% Declare the options which must be passed to \pkg{adjcalc} in a special form,
+% because they require extra packages. This must be this way because \pkg{adjcalc}
+% is already loaded.
+%    \begin{macrocode}
+\DeclareOptionX<Adjbox>{pgfmath}{\AtEndOfPackage{\RequirePackage{pgf}\adjcalcset{pgfmath}}}
+\DeclareOptionX<Adjbox>{calc}{\AtEndOfPackage{\RequirePackage{calc}\adjcalcset{calc}}}
+\DeclareOptionX<Adjbox>{etex}{\AtEndOfPackage{\adjcalcset{etex}}}
+\DeclareOptionX<Adjbox>{defaultunit}{\AtEndOfPackage{\adjcalcset{defaultunit={#1}}}}
+%    \end{macrocode}
+%
+% Handle the special \opt{pgf} and \opt{PGF} options.
+%    \begin{macrocode}
+\DeclareOptionX<Adjbox>{pgf}{\PassOptionsToPackage{pgf}{trimclip}}
+\DeclareOptionX<Adjbox>{PGF}{\PassOptionsToPackage{pgf}{trimclip}\AtEndOfPackage{\RequirePackage{pgf}\adjcalcset{pgfmath}}}
+%    \end{macrocode}
+%
+% Pass all driver options to \pkg{trimclip} and all unknown options to \pkg{graphicx}.
+%    \begin{macrocode}
+\DeclareOptionX*{%
+    \IfFileExists{tc-\CurrentOption.def}{%
+        \PassOptionsToPackage\CurrentOption{trimclip}%
+    }{%
+        \PassOptionsToPackage\CurrentOption{graphicx}%
+    }%
+}
+%    \end{macrocode}
+%
+% Process all options.
+%    \begin{macrocode}
+\ProcessOptionsX*<Adjbox>\relax
+%    \end{macrocode}
+%
+% Load the required packages.
+%    \begin{macrocode}
+\RequirePackage{trimclip}
+\RequirePackage{graphicx}[1999/02/16]
+\RequirePackage{collectbox}[2012/05/17]
+%    \end{macrocode}
+%
+% Fall-back code for older \pkg{collectbox} versions:
+%    \begin{macrocode}
+\@ifpackagelater{collectbox}{2012/05/17}{}{%
+    \let\@Collectbox\@collectbox
+}
+%    \end{macrocode}
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Basic commands} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{macro}{\adjustboxset}
+%    \begin{macrocode}
+\newcommand*\adjustboxset{%
+    \@ifstar
+        {\adjbox@addkeysafter}%
+        {\adjbox@addkeysbefore}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjbox@addkeysbefore}
+%    \begin{macrocode}
+\def\adjbox@addkeysbefore#1{%
+    \ifx\@nnil#1\@nnil
+        \let\adjbox@keysbefore\@empty
+    \else
+        \expandafter\def\expandafter\adjbox@keysbefore\expandafter{\adjbox@keysbefore,#1}%
+        \let\adjbox@setkeys\adjbox@setkeys@ba
+    \fi
+}
+\let\adjbox@keysbefore\@empty
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjbox@addkeysafter}
+%    \begin{macrocode}
+\def\adjbox@addkeysafter#1{%
+    \begingroup
+    \def\@tempa{#1}%
+    \ifx\@tempa\@empty
+        \endgroup
+        \let\adjbox@keysafter\@empty
+    \else
+        \expandafter\expandafter
+        \expandafter\endgroup
+        \expandafter\expandafter
+        \expandafter\def
+        \expandafter\expandafter
+        \expandafter\adjbox@keysafter
+        \expandafter\expandafter
+        \expandafter{\expandafter\@tempa\expandafter,\adjbox@keysafter}%
+        \let\adjbox@setkeys\adjbox@setkeys@ba
+    \fi
+}
+\let\adjbox@keysafter\@empty
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \begin{macro}{\adjustbox}
+% Now processes the keys before the box is read to allow for parbox or similar modes.
+%
+% This code was originally adapted from the \Macro\Gin@ii macro from the |graphicx| package.
+% The \emph{temp switch a} is set to |true| to indicate to |graphicx| that the
+% scaling should be done internal, so this package doesn't have to do it.
+% The content including macro \Macro\adjustbox@content is but into place,
+% the saved options are activated and the final size is set.
+% The typesetting of the content is finally done by executing the token register.
+%    \begin{macrocode}
+\newcommand\adjustbox[1]{%
+    \begingroup
+    \edef\adjbox@line{\the\inputlineno}%
+    \let\collectbox@mode\relax
+    \let\collectbox@noindent\relax
+    \collectboxcheckenv{adjustbox}%
+    \ifcollectboxenv\else
+        \let\adjustbox@noindent\relax
+    \fi
+    \begingroup
+    \adjbox@setkeys{#1}%
+    \expandafter\expandafter\expandafter
+    \endgroup
+    \expandafter
+    \adjbox@collectbox\expandafter{\expandafter\adjustbox@\expandafter{\XKV@rm}}%
+}
+\def\adjbox@collectbox{\@collectbox}
+\def\adjbox@setkeys@ba{%
+    \expandafter\expandafter
+    \expandafter\adjbox@@setkeys@ba
+    \expandafter\expandafter
+    \expandafter{\expandafter\adjbox@keysbefore\expandafter}%
+    \expandafter{\adjbox@keysafter}%
+}
+\def\adjbox@@setkeys@ba#1#2#3{%
+    \setkeys*{ADJBOX}{#1,#3,#2}%
+}
+\def\adjbox@setkeys{%
+    \setkeys*{ADJBOX}%
+}
+\let\adjustbox@noindent\noindent
+%    \end{macrocode}
+% \end{environment}
+%
+%
+% \begin{macro}{\adjustbox@}
+% Second part of \Macro\adjustbox, after the content has been boxed.
+% This sets the dimension macros, processes the keys and finally typesets the content.
+%    \begin{macrocode}
+\def\adjustbox@#1{%
+    \adjbox@Width\width
+    \adjbox@Height\height
+    \adjbox@Depth\depth
+    \adjbox@Totalheight\totalheight
+    \let\Width\adjbox@Width
+    \let\Height\adjbox@Height
+    \let\Depth\adjbox@Depth
+    \let\Totalheight\adjbox@Totalheight
+    \let\Gin@esetsize\adjbox@esetsize
+    \let\@collectbox\@Collectbox
+    \@tempswatrue
+    \toks@{{\adjustbox@content}}%
+    \def\setlength{\adjsetlength}%
+    \setkeys{adjbox,Gin,adjcalc}{#1}%
+    \adjbox@esetsize
+    \adjustbox@noindent
+    \the\toks@
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjustbox@content}
+% The default content, which is simply the collected box.
+% This macro can be redefined if required.
+%    \begin{macrocode}
+\def\adjustbox@content{%
+    \usebox\collectedbox
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@Width}
+% \begin{macro}{\adjbox@Height}
+% \begin{macro}{\adjbox@Depth}
+% \begin{macro}{\adjbox@Totalheight}
+% Dimension registers for original sizes.
+%    \begin{macrocode}
+\newdimen\adjbox@Width
+\newdimen\adjbox@Height
+\newdimen\adjbox@Depth
+\newdimen\adjbox@Totalheight
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@esetsize}
+% Replacement of \Macro\Gin@esetsize.
+% Now always called in external mode. Checks if any size is set and, as an optimation, does nothing otherwise.
+%
+% OLD:
+% When called in \emph{external} mode (switch is true) then the content is wrapped in
+% the internal form of \Macro\resizebox. In \emph{internal} mode, i.e.\ resizing is done by the graphic driver,
+% the same code is added around the inner macro. This ensures the same behaviour as \Macro\includegraphics.
+%    \begin{macrocode}
+\def\adjbox@esetsize{%
+  \ifcase0%
+    \ifx\Gin@ewidth\Gin@exclamation\else 1\fi
+    \ifx\Gin@eheight\Gin@exclamation\else 1\fi
+  \relax
+  \else
+    \edef\@tempa{\toks@{\noexpand
+                \Gscale@@box\noexpand\Gin@eresize
+                {\Gin@ewidth}{\Gin@eheight}{\the\toks@}}}%
+    \@tempa
+    \let\Gin@ewidth\Gin@exclamation
+    \let\Gin@eheight\Gin@exclamation
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjustimage}
+% Simple wrapper to use \Macro\adjustbox for images.
+% It uses the internal code of \Macro\includegraphics instead
+% to allow later redefinition of that macro.
+%    \begin{macrocode}
+\newcommand*\adjustimage[2]{%
+    \adjustbox{#1}{\Gin@clipfalse\Gin@i{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjincludegraphics}
+% Simple wrapper to use \Macro\adjustbox for images in the same format of \Macro\includegraphics.
+% This allows to simply do |\let\includegraphics\adjincludegraphics|, which is done by the \opt{Export} option.
+%    \begin{macrocode}
+\newcommand*\adjincludegraphics[2][]{%
+    \adjustbox{#1}{\Gin@clipfalse\Gin@i{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% End input of file if the \opt{minimal} option was used.
+%    \begin{macrocode}
+{\csname adjustbox@minimal\endcsname}
+%    \end{macrocode}
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Internal code adding macros} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{macro}{\adjbox@Gin@add}
+%    \begin{macrocode}
+\def\adjbox@Gin@add#1{%
+    \def\@tempa{#1}%
+    \toks@\expandafter\expandafter\expandafter{\expandafter\@tempa\expandafter{\the\toks@}}%
+}
+\def\adjbox@Gin@Add{%
+    \Gin@esetsize
+    \@tempswatrue
+    \adjbox@Gin@add
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\newadjustboxkey}
+%    \begin{macrocode}
+\newcommand\newadjustboxkey{%
+    \@adjustboxkey\adjustbox@newkey
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\renewadjustboxkey}
+%    \begin{macrocode}
+\newcommand\renewadjustboxkey{%
+    \@adjustboxkey\adjustbox@renewkey
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\provideadjustboxkey}
+%    \begin{macrocode}
+\newcommand\provideadjustboxkey{%
+    \@adjustboxkey\adjustbox@providekey
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\defadjustboxkey}
+%    \begin{macrocode}
+\newcommand\defadjustboxkey{%
+    \@adjustboxkey\@secondoftwo
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@adjustboxkey}
+%    \begin{macrocode}
+\def\@adjustboxkey#1{%
+    \@ifstar
+        {\@adjustboxkey@i#1*}%
+        {\@adjustboxkey@i#1\relax}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@adjustboxkey@i}
+%    \begin{macrocode}
+\def\@adjustboxkey@i#1#2#3{%
+    \@ifnextchar{[}%
+        {\@adjustboxkey@ii#1#2{#3}}%
+        {\@adjustboxkey@ii#1#2{#3}[\@nnil]}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@adjustboxkey@ii}
+%    \begin{macrocode}
+\def\@adjustboxkey@ii#1#2#3[#4]#5{%
+  \ifx\@nnil#4\relax
+    \@adjustboxkey@iii#1#2{#3}{}{#5}%
+  \else
+    \@adjustboxkey@iii#1#2{#3}{[#4]}{#5}%
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@adjustboxkey@iv}
+%    \begin{macrocode}
+\def\@adjustboxkey@iii#1#2#3#4#5{%
+  #1{#3}{%
+    \ifx*#2\relax
+        \define@key\adjbox@fam{#3}#4{#5}%
+    \else
+        \define@key\adjbox@fam{#3}#4{%
+            \adjbox@Gin@Add{\@Collectbox{#5}}%
+        }%
+    \fi
+  }{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\define@adjboxkey}
+%    \begin{macrocode}
+\def\define@adjboxkey#1#2{%
+    \define@key\adjbox@fam{#1}{%
+        \adjbox@Gin@Add{#2}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\define@adjboxkey@defvalue}
+%    \begin{macrocode}
+\def\define@adjboxkey@defvalue#1#2#3{%
+    \define@key\adjbox@fam{#1}[{#2}]{%
+        \adjbox@Gin@Add{#3}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\define@adjboxkey@novalue}
+%    \begin{macrocode}
+\def\define@adjboxkey@novalue#1#2{%
+    \define@key\adjbox@fam{#1}[\@nil]{%
+        \adjbox@novalue{##1}%
+        \adjbox@Gin@Add{#2}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@novalue}
+%    \begin{macrocode}
+\def\adjbox@novalue#1{%
+    \ifx\@nil#1\else
+        \PackageWarning{adjustbox}{%
+            Key '\XKV@tkey' does not await a value.\MessageBreak
+            Given value will be ignored%
+        }%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjustbox@newkey}
+%    \begin{macrocode}
+\def\adjustbox@newkey#1#2{%
+    \@ifundefined{KV@\adjbox@fam @#1}{#2}{%
+        \PackageError{adjustbox}{Key '#1' already defined}{}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjustbox@renewkey}
+%    \begin{macrocode}
+\def\adjustbox@renewkey#1{%
+    \@ifundefined{KV@\adjbox@fam @#1}{%
+        \PackageError{adjustbox}{Key '#1' undefined}{}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjustbox@providekey}
+%    \begin{macrocode}
+\def\adjustbox@providekey#1#2{%
+    \@ifundefined{KV@\adjbox@fam @#1}{#2}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \begin{macro}{\adjbox@let@key}
+% Aliases one key to another.
+%    \begin{macrocode}
+\def\adjbox@let@key#1#2#3{%
+    \expandafter\let\csname KV@#1@#2\expandafter\endcsname\csname KV@#1@#3\endcsname
+    \expandafter\let\csname KV@#1@#2@default\expandafter\endcsname\csname KV@#1@#3@default\endcsname
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Keys for trimming, clipping, viewport and margin} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% \begin{key}{adjbox}{viewport}
+%    \begin{macrocode}
+\define@key{adjbox}{viewport}{%
+    \def\adjustbox@content{%
+        \@trimclip{%
+            \ifGin@clip
+                \expandafter\@clipvpbox
+            \else
+                \expandafter\@viewportbox
+            \fi
+        }{#1}%
+    }%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{Viewport}
+%    \begin{macrocode}
+\define@adjboxkey{Viewport}{\trimbox@s{#1}}%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{trim}
+%    \begin{macrocode}
+\define@key{adjbox}{trim}{%
+    \def\adjustbox@content{%
+        \@trimclip{%
+            \ifGin@clip
+                \expandafter\@clipbox
+            \else
+                \expandafter\@trimbox
+            \fi
+        }{#1}%
+    }%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{Trim}
+%    \begin{macrocode}
+\define@adjboxkey{Trim}{\trimbox@{#1}}%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{Clip}
+%    \begin{macrocode}
+\define@adjboxkey{Clip}{\clipbox@{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{Clip*}
+%    \begin{macrocode}
+\define@adjboxkey{Clip*}{\clipbox@s{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{margin}
+%    \begin{macrocode}
+\define@adjboxkey{margin}{\marginbox@{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{margin*}
+%    \begin{macrocode}
+\define@adjboxkey{margin*}{\marginbox@s{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{padding}
+% Alias for \Key{margin}.
+%    \begin{macrocode}
+\adjbox@let@key\adjbox@fam{padding}{margin}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{padding*}
+% Alias for \Key{margin*}.
+%    \begin{macrocode}
+\adjbox@let@key\adjbox@fam{padding*}{margin*}
+%    \end{macrocode}
+% \end{key}
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Scaling and rotating keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{scale}
+%    \begin{macrocode}
+\define@key\adjbox@fam{scale}{%
+    \@ifnextchar\bgroup{%
+        \adjbox@scale@xy
+    }{%
+        \adjbox@scale@x
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@scale@x}
+%    \begin{macrocode}
+\def\adjbox@scale@x#1\@nnil{%
+    \adjbox@scale@xy{#1}{#1}\@nnil%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjbox@scale@xy}
+%    \begin{macrocode}
+\def\adjbox@scale@xy#1#2\@nnil{%
+  \if@tempswa
+    \adjbox@Gin@add{\Gscale@box{#1}[{#2}]}%
+  \else
+    \def\Gin@req@sizes{%
+      \def\Gin@scalex{#1}\def\Gin@scaley{#2}%
+      \Gin@req@height\Gin@scaley\Gin@nat@height
+      \Gin@req@width\Gin@scalex\Gin@nat@width}%
+  \fi
+  \@tempswatrue
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{reflect}
+% Taken from the \Key{scale} key of the \pkg{graphicx} package.
+% Open question: why is \Macro\Gin@esetsize not called?
+%    \begin{macrocode}
+\define@key\adjbox@fam{reflect}[]{%
+    \adjbox@scale@xy{-1}{1}\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{rotate}
+% New alias of existing |angle| key.
+%    \begin{macrocode}
+\expandafter\let\csname KV@\adjbox@fam @rotate\endcsname\KV@Gin@angle
+%    \end{macrocode}
+% \end{key}
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Horizontal alignment keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% \begin{macro}{\adjbox@halign}
+%    \begin{macrocode}
+\def\adjbox@halign#1#2#3{%
+    \@collectbox{\@adjbox@halign{#1}{#2}{#3}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@adjbox@halign}
+%    \begin{macrocode}
+\def\@adjbox@halign#1#2#3{%
+    \begingroup
+    \adjsetlength\@tempdima{#1}%
+    \leavevmode\hb@xt@\the\@tempdima{#2\BOXCONTENT#3}%
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{key}{adjbox}{center}
+%    \begin{macrocode}
+\define@adjboxkey@defvalue{center}{\linewidth}{\adjbox@halign{#1}\hss\hss}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{left}
+%    \begin{macrocode}
+\define@adjboxkey@defvalue{left}{\linewidth}{\adjbox@halign{#1}\relax\hss}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{right}
+%    \begin{macrocode}
+\define@adjboxkey@defvalue{right}{\linewidth}{\adjbox@halign{#1}\hss\relax}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\centerbox}
+%    \begin{macrocode}
+\newcommand\centerbox[1][\linewidth]{%
+    \adjustbox@noindent
+    \adjbox@halign{#1}\hss\hss
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\leftalignbox}
+%    \begin{macrocode}
+\newcommand\leftalignbox[1][\linewidth]{%
+    \adjustbox@noindent
+    \adjbox@halign{#1}\relax\hss
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\rightalignbox}
+%    \begin{macrocode}
+\newcommand\rightalignbox[1][\linewidth]{%
+    \adjustbox@noindent
+    \adjbox@halign{#1}\hss\relax
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{outer}
+%    \begin{macrocode}
+\define@adjboxkey@defvalue{outer}{\linewidth}{%
+    \outersidebox[{#1}]%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{inner}
+%    \begin{macrocode}
+\define@adjboxkey@defvalue{inner}{\linewidth}{%
+    \innersidebox[{#1}]%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\outersidebox}
+%    \begin{macrocode}
+\newcommand\outersidebox[1][\linewidth]{%
+    \collectboxcheckenv{outersidebox}%
+    \adjustbox@noindent
+    \adjbox@halign{#1}{%
+        \checkoddpage
+        \ifoddpageoroneside
+            \hss
+        \else
+            \relax
+        \fi
+    }{%
+        \ifoddpageoroneside
+            \relax
+        \else
+            \hss
+        \fi
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\innersidebox}
+%    \begin{macrocode}
+\newcommand\innersidebox[1][\linewidth]{%
+    \collectboxcheckenv{innersidebox}%
+    \adjustbox@noindent
+    \adjbox@halign{#1}{%
+        \checkoddpage
+        \ifoddpageoroneside
+            \relax
+        \else
+            \hss
+        \fi
+    }{%
+        \ifoddpageoroneside
+            \hss
+        \else
+            \relax
+        \fi
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\IfFileExists{ifoddpage.sty}{%
+    \RequirePackage{ifoddpage}%
+}{%
+    \renewcommand\outersidebox[1][]{%
+        \PackageError{adjustbox}{%
+            The 'outer' and 'inner' keys as well as the\MessageBreak
+            \string\outersidebox\space and \string\innersidebox\space macros\MessageBreak
+            require the 'ifoddpage' package, which is not\MessageBreak
+            installed}{}%
+    }%
+    \let\innersidebox\outersidebox
+}%
+%    \end{macrocode}
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Vertical alignment keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{raise}
+%    \begin{macrocode}
+\define@key\adjbox@fam{raise}{%
+    \@ifnextchar\bgroup{%
+        \adjbox@raise
+    }{%
+        \adjbox@raise{#1}{}{}%
+    }#1{}{}{}\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@raise}
+%    \begin{macrocode}
+\def\adjbox@raise#1#2#3#4\@nnil{%
+    \adjbox@Gin@Add{\adjbox@raisebox{#1}{#2}{#3}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@raisebox}[3]{raise amount}{height}{depth}
+%    \begin{macrocode}
+\def\adjbox@raisebox#1#2#3{%
+    \@collectbox{\adjbox@@raisebox{#1}{#2}{#3}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@@raisebox}[3]{raise amount}{height}{depth}
+%    \begin{macrocode}
+\def\adjbox@@raisebox#1#2#3{%
+    \ifx\@nnil#1\@nnil
+        \setbox\@tempboxa\copy\collectedbox
+    \else
+        \adjsetlength\@tempdima{#1}%
+        \setbox\@tempboxa\hbox{\raise\@tempdima\copy\collectedbox}%
+    \fi
+    \ifx\@nnil#2\@nnil\else
+        \adjsetlength\@tempdima{#2}%
+        \ht\@tempboxa\@tempdima
+    \fi
+    \ifx\@nnil#3\@nnil\else
+        \adjsetlength\@tempdima{#3}%
+        \dp\@tempboxa\@tempdima
+    \fi
+    \leavevmode
+    \box\@tempboxa
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{valign}
+%    \begin{macrocode}
+\define@key\adjbox@fam{valign}{%
+    \expandafter\adjbox@Gin@Add\expandafter{\csname adjbox@valign@#1\endcsname}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjboxvtop}
+%    \begin{macrocode}
+\def\adjboxvtop{\ht\strutbox}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\adjboxvcenter}
+%    \begin{macrocode}
+\def\adjboxvcenter{1ex}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\adjboxvbottom}
+%    \begin{macrocode}
+\def\adjboxvbottom{-\dp\strutbox}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@t}
+%    \begin{macrocode}
+\def\adjbox@valign@t{%
+    \adjbox@raisebox{-\height+\adjboxvtop}{}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@T}
+%    \begin{macrocode}
+\def\adjbox@valign@T{%
+    \adjbox@raisebox{-\height}{}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@M}
+%    \begin{macrocode}
+\def\adjbox@valign@M{%
+    \adjbox@raisebox{.5\depth-.5\height}{}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@m}
+%    \begin{macrocode}
+\def\adjbox@valign@m{%
+    \adjbox@raisebox{.5\depth-.5\height+\adjboxvcenter}{}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@c}
+%    \begin{macrocode}
+\def\adjbox@valign@c#1{%
+    \leavevmode
+    \hbox{%
+        $\vcenter{\hbox{#1}}\m@th$%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@b}
+%    \begin{macrocode}
+\def\adjbox@valign@b{%
+    \adjbox@raisebox{\depth+\adjboxvbottom}{}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@valign@B}
+%    \begin{macrocode}
+\def\adjbox@valign@B{%
+    \adjbox@raisebox{\depth}{}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Set vertical sizes} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{set height}
+%    \begin{macrocode}
+\define@adjboxkey{set height}{\adjbox@raisebox{}{#1}{}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{set depth}
+%    \begin{macrocode}
+\define@adjboxkey{set depth}{\adjbox@raisebox{}{}{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{set vsize}
+% Uses the same code like \Key{raise} but with the raise value of 0pt,
+% i.e.\ only sets the height and depth.
+%    \begin{macrocode}
+\define@adjboxkey{set vsize}{\adjbox@raisebox{}#1}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Vertical spacing} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{vspace}
+%    \begin{macrocode}
+\define@key\adjbox@fam{vspace}{%
+    \adjbox@vskip#1 {} \@nnil{}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{vspace*}
+%    \begin{macrocode}
+\define@key\adjbox@fam{vspace*}{%
+    \adjbox@vskip#1 {} \@nnil*%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@vskip}
+%    \begin{macrocode}
+\def\adjbox@vskip#1 #2 #3\@nnil#4{%
+    \ifx\@nnil#2\@nnil
+        \adjust@addcode{\par\vspace#4{#1}\noindent}{\par\vspace#4{#1}}%
+    \else
+        \adjust@addcode{\par\vspace#4{#1}\noindent}{\par\vspace#4{#2}}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Minimum and maximum size keys and macros} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{min width}
+%    \begin{macrocode}
+\define@adjboxkey{min width}{\@minsizebox\height{#1}!}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{max width}
+%    \begin{macrocode}
+\define@adjboxkey{max width}{\@maxsizebox\height{#1}!}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{min height}
+%    \begin{macrocode}
+\define@adjboxkey{min height}{\@minsizebox\height!{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{max height}
+%    \begin{macrocode}
+\define@adjboxkey{max height}{\@maxsizebox\height!{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{min totalheight}
+%    \begin{macrocode}
+\define@adjboxkey{min totalheight}{\@minsizebox\totalheight!{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{max totalheight}
+%    \begin{macrocode}
+\define@adjboxkey{max totalheight}{\@maxsizebox\totalheight!{#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+%
+% \begin{macro}{\adjbox@Gin@sizeadd}
+% Checks if key-value is actually two arguments. If not it is doubled.
+% E.g.: \verb+min size=\A+ is the same as  \verb+min size={\A}{\A}+
+%    \begin{macrocode}
+\def\adjbox@Gin@sizeadd#1#2\@nnil{%
+    \@ifnextchar\bgroup{%
+        \adjbox@Gin@Add{#1#2}%
+        \remove@to@nnil
+    }{%
+        \adjbox@Gin@Add{#1{#2}{#2}}%
+        \remove@to@nnil
+    }#2\@nnil
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{min size}
+%    \begin{macrocode}
+\define@key\adjbox@fam{min size}{%
+    \adjbox@Gin@sizeadd{\@minsizebox\height}#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{max size}
+%    \begin{macrocode}
+\define@key\adjbox@fam{max size}{%
+    \adjbox@Gin@sizeadd{\@maxsizebox\height}#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{min totalsize}
+%    \begin{macrocode}
+\define@key\adjbox@fam{min totalsize}{%
+    \adjbox@Gin@sizeadd{\@minsizebox\totalheight}#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{max totalsize}
+%    \begin{macrocode}
+\define@key\adjbox@fam{max totalsize}{%
+    \adjbox@Gin@sizeadd{\@maxsizebox\totalheight}#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{warn width}
+%    \begin{macrocode}
+\define@adjboxkey@defvalue{warn width}{\linewidth}{\@Collectbox{\adjbox@warnwidth{#1}}}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@warnwidth}
+% Warn if width is wider than the given width plus |\hfuzz|.
+%    \begin{macrocode}
+\def\adjbox@warnwidth#1{%
+        \@tempdima=#1\relax
+        \advance\@tempdima by -\width
+        \@tempdima=-\@tempdima
+        \ifdim\@tempdima>\hfuzz
+            \typeout{Overfull \string\hbox\space (\the\@tempdima\space too wide) in adjustbox at
+                \ifnum\adjbox@line=\inputlineno
+                    line \adjbox@line
+                \else
+                    lines \adjbox@line--\the\inputlineno
+                \fi
+            }%
+        \fi
+        \BOXCONTENT
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{macro}{\minsizebox}
+%    \begin{macrocode}
+\newcommand*\minsizebox{%
+    \collectboxcheckenv{minsizebox}%
+    \@ifstar{\@minsizebox\totalheight}{\@minsizebox\height}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{minsizebox*}
+%    \begin{macrocode}
+\expandafter\newcommand\expandafter*\csname minsizebox*\endcsname{%
+    \@collectboxisenv{minsizebox*}%
+    \@minsizebox\totalheight
+}
+%    \end{macrocode}
+% \end{environment}
+%
+%
+% \begin{macro}{\@minsizebox}
+%    \begin{macrocode}
+\newcommand*\@minsizebox[3]{%
+    \@collectbox{\@minmaxsizebox>#1{#2}{#3}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\maxsizebox}
+%    \begin{macrocode}
+\newcommand*\maxsizebox{%
+    \collectboxcheckenv{maxsizebox}%
+    \@ifstar{\@maxsizebox\totalheight}{\@maxsizebox\height}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{maxsizebox*}
+%    \begin{macrocode}
+\expandafter\newcommand\expandafter*\csname maxsizebox*\endcsname{%
+    \@collectboxisenv{maxsizebox*}%
+    \@maxsizebox\totalheight
+}
+%    \end{macrocode}
+% \end{environment}
+%
+%
+% \begin{macro}{\@maxsizebox}
+%    \begin{macrocode}
+\newcommand*\@maxsizebox[3]{%
+    \@collectbox{\@minmaxsizebox<#1{#2}{#3}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@minmaxsizebox}[4]{Compare sign \texttt{<} or \texttt{>}}{\cs{height} or \cs{totalheight}}{width}{height}
+% Used for all min/max-size boxes including the starred version. The first two arguments determine the style.
+%
+% The width and height values are expanded to allow for \Macro\ifdim or similar conditionals.
+%    \begin{macrocode}
+\newcommand*\@minmaxsizebox[4]{%
+    \edef\@tempa{#3}%
+    \edef\@tempb{#4}%
+    \ifcase0%
+%    \end{macrocode}
+% Do nothing if both values are `|!|', otherwise use case 1 if the height is to large/small (|#1|)
+% than the \Macro\height or \Macro\totalheight (|#2|).
+%    \begin{macrocode}
+    \ifx\@tempa\Gin@exclamation
+        \ifx\@tempb\Gin@exclamation
+        \else
+            \ifdim\@tempb#1#2%
+                1%
+            \fi
+        \fi
+    \else
+%    \end{macrocode}
+% If the width is given, but not the height, use case 2 if the width is to large/small (|#1|) than the native \Macro\width.
+%    \begin{macrocode}
+        \ifx\@tempb\Gin@exclamation
+            \ifdim\@tempa#1\width
+                2%
+            \fi
+        \else
+%    \end{macrocode}
+% If both values are given.
+% Use case 0-3 depending if the width and/or height is to large/small.
+%    \begin{macrocode}
+            \ifdim\@tempa#1\width
+                \ifdim\@tempb#1#2%
+                    3%
+                \else
+                    2%
+                \fi
+            \else
+                \ifdim\@tempb#1#2%
+                    1%
+                \fi
+            \fi
+        \fi
+    \fi
+%    \end{macrocode}
+%  Case 0: no scaling is needed. Insert content unchanged.
+%    \begin{macrocode}
+    \relax% 0
+        \BOXCONTENT
+%    \end{macrocode}
+%  Case 1: height needs scaling. Calculate factor and scale the content with it.
+%    \begin{macrocode}
+    \or
+        \adjsetlength\@tempdima\@tempb
+        \Gscale@div\@tempa\@tempdima#2%
+        \Gscale@box\@tempa[\@tempa]\BOXCONTENT
+%    \end{macrocode}
+%  Case 2: width needs scaling. Calculate factor and scale the content with it.
+%    \begin{macrocode}
+    \or
+        \adjsetlength\@tempdima\@tempa
+        \Gscale@div\@tempa\@tempdima\width
+        \Gscale@box\@tempa[\@tempa]\BOXCONTENT
+%    \end{macrocode}
+%  Case 3: both width and height need scaling.
+%  Both scale factors are calculated and the more extreme value is used.
+%    \begin{macrocode}
+    \or
+        \adjsetlength\@tempdima\@tempa
+        \Gscale@div\@tempa\@tempdima\width
+        \adjsetlength\@tempdima\@tempb
+        \Gscale@div\@tempb\@tempdima#2%
+        \ifdim\@tempa\p@#1\@tempb\p@
+            \let\@tempb\@tempa
+        \else
+            \let\@tempa\@tempb
+        \fi
+        \Gscale@box\@tempa[\@tempb]\BOXCONTENT
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Frame keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% \begin{key}{adjbox}{frame}
+% As 0--3 arguments: rule width, (inner) separation and margin.
+%    \begin{macrocode}
+\define@key\adjbox@fam{frame}[{{\fboxrule}}]{%
+    \adjbox@frame{\fboxsep\z@}#1 {} {} \relax\relax\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{fbox}
+% Same as \Key{frame} but with different default separation.
+%    \begin{macrocode}
+\define@key\adjbox@fam{fbox}[{{\fboxrule}}]{%
+    \adjbox@frame{}#1 {} {} {} \relax\relax\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@frame}
+%    \begin{macrocode}
+\def\adjbox@frame#1#2 #3 #4 #5\relax{%
+    \adjbox@Gin@Add{%
+        \@Collectbox{#1\adjbox@@frame{}{#2}{#3}{#4}}%
+    }%
+    \remove@to@nnil
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{cframe}
+%    \begin{macrocode}
+\define@key\adjbox@fam{cframe}{%
+    \adjbox@checkcolor
+    \adjbox@cframe{\fboxsep\z@}#1 {} {} {} \relax\relax\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{cfbox}
+%    \begin{macrocode}
+\define@key\adjbox@fam{cfbox}{%
+    \adjbox@checkcolor
+    \adjbox@cframe{}#1 {} {} {} \relax\relax\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@cframe}
+%    \begin{macrocode}
+\def\adjbox@cframe#1#2 #3 #4 #5 #6\relax{%
+    \adjbox@Gin@Add{%
+        \@Collectbox{#1\adjbox@@frame{\color{#2}}{#3}{#4}{#5}}%
+    }%
+    \remove@to@nnil
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@checkcolor}
+%    \begin{macrocode}
+\def\adjbox@checkcolor{%
+    \ifcase0%
+        \expandafter\ifx\csname ver@xcolor.sty\endcsname\relax
+        \expandafter\ifx\csname ver@color.sty\endcsname\relax
+        \expandafter\ifx\csname ver@xxcolor.sty\endcsname\relax 1\fi\fi\fi
+    \relax
+        \global\let\adjbox@checkcolor\relax
+    \else
+        \PackageError{adjustbox}{Using a macro, environment or key with color\MessageBreak
+                requires a color package to be loaded manually.\MessageBreak
+                Recommended is 'xcolor' but 'color' is ok, too}{}.
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@@frame}[4]{content}{rule width}{separation}{margin}
+%    \begin{macrocode}
+\def\adjbox@@frame#1#2#3#4{%
+    \ifx\@nnil#2\@nnil\else
+        \adjsetlength\fboxrule{#2}%
+    \fi
+    \ifx\@nnil#3\@nnil\else
+        \adjsetlength\fboxsep{#3}%
+    \fi
+    \adjsetlength\tc@llx{\fboxrule + \fboxsep}%
+    \@marginbox\collectedbox\tc@llx\tc@llx\tc@llx\tc@llx
+    \ifx\@nnil#4\@nnil\else
+      \setbox\collectedbox
+    \fi
+      \hbox\bgroup\color@setgroup
+        \BOXCONTENT
+        \hskip-\width
+        #1%
+        \adjbox@boxframe\width\height\depth
+      \color@endgroup\egroup
+    \ifx\@nnil#4\@nnil\else
+      \adjsetlength\tc@llx{#4}%
+      \@marginbox\collectedbox\tc@llx\tc@llx\tc@llx\tc@llx
+      \BOXCONTENT
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@boxframe}[3]{width}{height}{depth}
+% Tries to reuse the definition of the \pkg{xcolor} package.
+% If it isn't loaded its definition is defined here.
+%
+% This code was taken from the \pkg{xcolor} package under the free LPPL license.
+%    \begin{macrocode}
+\let\adjbox@boxframe\boxframe
+\providecommand\adjbox@boxframe[3]{%
+    \hbox{%
+        \dimen@ #2%
+        \advance \dimen@ #3\relax
+        \lower #3\vbox {%
+            \hrule \@height \fboxrule
+            \@tempdima -0.5\fboxrule
+            \ifodd\fboxrule
+                \advance \@tempdima \m@ne sp
+            \fi
+            \kern \@tempdima
+            \hbox {%
+                \advance \dimen@ -\fboxrule
+                \vrule \@width \fboxrule \@height \dimen@ \@depth \z@
+                \@tempdima #1%
+                \advance \@tempdima -\tw@ \fboxrule
+                \kern \@tempdima
+                \vrule \@width \fboxrule \@height \dimen@ \@depth \z@
+            }%
+            \kern -0.5\fboxrule
+            \hrule \@height \fboxrule
+        }%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Density keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{dpi}
+%    \begin{macrocode}
+\define@key\adjbox@fam{dpi}{%
+    \adjsetlength\pdfpxdimen{1in/(#1)}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{pxdim}
+%    \begin{macrocode}
+\define@key\adjbox@fam{pxdim}{%
+    \adjsetlength\pdfpxdimen{#1}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Code keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    \begin{macrocode}
+\define@key\adjbox@fam{execute}{%
+    #1%
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\define@key\adjbox@fam{@debug}[]{%
+    \showthe\toks@
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\define@key{ADJBOX}{Execute}{%
+    #1%
+}
+%    \end{macrocode}
+%
+%
+% \begin{key}{adjbox}{addcode}
+% Adds code before and after the current boxed content.
+% Syntax:~\Key{addcode}'='{<code before>}{<code afterwards>}
+%    \begin{macrocode}
+\define@key{adjbox}{Addcode}{%
+    \adjust@@addcode#1{}\@nnil%
+}
+\define@key{adjbox}{addcode}{%
+    \Gin@esetsize
+    \@tempswatrue
+    \adjust@@addcode#1{}\@nnil%
+}
+\long\def\adjust@@addcode#1#2#3\@nnil{%
+    \ifx\@nnil#3\@nnil
+        \adjust@addcode{#1}{#2}%
+    \else
+        \PackageError{adjustbox}{Incorrect input for key 'addcode={<code before>}{<code afterwards>}'!}%
+    \fi
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{precode}
+%    \begin{macrocode}
+\define@key{adjbox}{precode}{%
+    \Gin@esetsize
+    \@tempswatrue
+    \adjust@addcode{#1}{}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{Precode}
+% Same as \Key{precode} but does not set the size yet.
+%    \begin{macrocode}
+\define@key{adjbox}{Precode}{%
+    \adjust@addcode{#1}{}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{appcode}
+%    \begin{macrocode}
+\define@key{adjbox}{appcode}{%
+    \toks@\expandafter{\the\toks@#1}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjust@addcode}
+%    \begin{macrocode}
+\long\def\adjust@addcode#1#2{%
+    \def\@tempa{#1}%
+    \toks@\expandafter\expandafter\expandafter{\expandafter\@tempa\expandafter{\the\toks@}#2}%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{env}
+% Adds environment around boxed content
+%    \begin{macrocode}
+\define@key\adjbox@fam{env}{%
+    \@ifnextchar\bgroup{%
+        \adjbox@addenv
+    }{%
+        \adjbox@addenv{#1}\@nnil%
+        \remove@to@nnil
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjust@addenv}
+%    \begin{macrocode}
+\def\adjbox@addenv#1#2\@nnil{%
+    \def\@tempa{\begin{#1}#2}%
+    \toks@\expandafter\expandafter\expandafter{\expandafter\@tempa\the\toks@\end{#1}}%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Background keys and macros} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{bgcolor}
+% Adds a colored box in the background.
+% |#1| are the argument to color, i.e. either \MacroArgs<color>
+% or \MacroArgs{<model>}{<color>}.
+%    \begin{macrocode}
+\define@key\adjbox@fam{bgcolor}{%
+    \adjbox@checkcolor
+    \@ifnextchar\bgroup{%
+        \adjbox@bgcolor
+    }{%
+        \adjbox@bgcolor{}{#1}%
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@bgcolor}
+% Parses the two possible arguments and adds the background color macro
+% to the token register.
+%    \begin{macrocode}
+\def\adjbox@bgcolor#1#2#3\@nnil{%
+    \ifx\@nnil#1\@nnil
+        \adjbox@Gin@add{\@Collectbox{\adjbox@@bgcolor{\color{#2}}}}%
+    \else
+        \adjbox@Gin@add{\@Collectbox{\adjbox@@bgcolor{\color[#1]{#2}}}}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{bgcolor*}
+% Adds a colored box in the background. It awaits a direct color macro,
+% which gives the user more flexibility.
+%    \begin{macrocode}
+\define@key\adjbox@fam{bgcolor*}{%
+    \adjbox@checkcolor
+    \adjbox@Gin@add{\@Collectbox{\adjbox@@bgcolor{#1}}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@@bgcolor}
+% This places a colored box (vrule) with the same dimensions than
+% the content, then compensates for the horizontal shift and places
+% the content. This is simpler and more direct than using \Macro\rlap
+% or a box macro from the \pkg{xcolor} package.
+%
+% The argument contains the color macro, e.g.\ \Macro\color{<color>}.
+%    \begin{macrocode}
+\def\adjbox@@bgcolor#1{%
+    \mbox{%
+        \hbox{%
+            #1%
+            \vrule\@width\width\@height\height\@depth\depth%
+        }%
+        \hskip-\width
+        \BOXCONTENT
+    }%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\bgimagebox}
+%    \begin{macrocode}
+\newcommand*\bgimagebox[2][]{%
+    \collectboxcheckenv{bgimagebox}%
+    \@collectbox{\@bgimagebox{#1}{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@bgimagebox}
+%    \begin{macrocode}
+\def\@bgimagebox#1#2{%
+    \mbox{%
+        \lower\depth\hbox{%
+            \edef\@tempa{\noexpand\adjustimage
+                {#1,width=\the\width,totalheight=\the\totalheight}%
+                {#2}%
+            }%
+            \@tempa
+        }%
+        \hskip-\width%
+        \BOXCONTENT
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{bgimage}
+% One or two arguments, the first optional one are further \Macro\includegraphics keys.
+%    \begin{macrocode}
+\define@key{adjbox}{bgimage}{%
+    \@ifnextchar\bgroup{%
+        \adjbox@bgimage
+    }{%
+        \adjbox@bgimage{}{#1}%
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@bgimage}
+%    \begin{macrocode}
+\def\adjbox@bgimage#1#2#3\@nnil{%
+    \adjbox@Gin@add{\@Collectbox{\@bgimagebox{#1}{#2}}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Lapping keys and macros} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{lap}
+%    \begin{macrocode}
+\define@key\adjbox@fam{lap}{%
+    \@ifnextchar\bgroup{%
+        \adjbox@lapbox
+    }{%
+        \adjbox@lapbox{#1}{}%
+    }#1{}{}\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@lapbox}
+%    \begin{macrocode}
+\def\adjbox@lapbox#1#2#3\@nnil{%
+    \ifx\@nnil#2\@nnil
+        \adjbox@Gin@Add{\lapbox{#1}}%
+    \else
+        \adjbox@Gin@Add{\lapbox[{#1}]{#2}}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{rlap}
+%    \begin{macrocode}
+\define@key\adjbox@fam{rlap}[]{%
+    \adjbox@Gin@Add{\lapbox{\width}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{llap}
+%    \begin{macrocode}
+\define@key\adjbox@fam{llap}[]{%
+    \adjbox@Gin@Add{\lapbox{-\width}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\lapbox}
+%    \begin{macrocode}
+\newcommand*\lapbox[2][\width-\@tempdimb]{%
+    \collectboxcheckenv{lapbox}%
+    \@collectbox{\@lapbox{#1}{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@lapbox}
+%    \begin{macrocode}
+\def\@lapbox#1#2{%
+    \adjsetlength\@tempdima{#2}%
+    \ifdim\@tempdima<\z@
+        \@tempdimb=-\@tempdima
+    \else
+        \@tempdimb=\@tempdima
+    \fi
+    \adjsetlength\@tempdimc{#1}%
+    \ifdim\@tempdimc<\z@
+        \@tempdimc=\z@
+    \fi
+    \leavevmode
+    \ifdim\@tempdima<\z@
+        \hb@xt@\@tempdimc{\hss\hb@xt@\@tempdimb{\usebox\collectedbox\hss}\hskip\@tempdimc}%
+    \else
+        \hb@xt@\@tempdimc{\hskip\@tempdimc\hb@xt@\@tempdimb{\hss\usebox\collectedbox}\hss}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Keys for minibox and varwidth} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{ADJBOX}{minipage}
+%    \begin{macrocode}
+\define@key{ADJBOX}{minipage}{%
+    \adjbox@page{minipage}{#1}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{ADJBOX}{varwidth}
+%    \begin{macrocode}
+\define@key{ADJBOX}{varwidth}{%
+    \adjbox@page{varwidth}{#1}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@page}
+% If the value starts with "[" or "{" take the value as it is,
+% otherwise assume that is a single length expression and add the required "{ }".
+%    \begin{macrocode}
+\def\adjbox@page#1#2{%
+    \@ifnextchar[{%
+        \adjbox@@page{#1}%
+    }{%
+        \@ifnextchar\bgroup{%
+            \adjbox@@page{#1}%
+        }{%
+            \adjbox@@page{#1}{{#2}}\@nnil%
+            \remove@to@nnil
+        }%
+    }#2\@nnil
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@@page}
+% Sets collect-box command to use \env{minipage} or similar environment.
+%
+% The \Macro\setlength macro is change temporary for the \env{minipage} or \env{varwidth} environment.
+%    \begin{macrocode}
+\def\adjbox@@page#1#2\@nnil{%
+    \def\adjbox@collectbox##1{\collectbox@{\adjbox@set\begin{#1}#2\adjbox@reset}{##1}{\end{#1}}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjbox@set}
+% Sets \Macro\setlength to \pkg{adjcalc} version.
+%    \begin{macrocode}
+\def\adjbox@set{%
+    \let\adjbox@origsetlength\setlength
+    \def\setlength{\adjsetlength}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@reset}
+% Resets \Macro\setlength to normal version.
+%    \begin{macrocode}
+\def\adjbox@reset{%
+    \let\setlength\adjbox@origsetlength
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Stackbox keys and macros} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% \begin{macro}{\stackbox}
+%    \begin{macrocode}
+\newcommand*\stackbox[1][c]{%
+    \collectboxcheckenv{stackbox}%
+    \@ifnextchar[%]
+        {\@stackbox{#1}}%
+        {\@@stackbox{#1}{b}[]}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@stackbox}
+% Read the third optional argument
+%    \begin{macrocode}
+\def\@stackbox#1[#2]{%
+    \@testopt{\@@stackbox{#1}{#2}}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@@stackbox}
+% The \env{varwidth} environment is used because it is much simpler to use than \env{tabular}.
+% The horizontal alignment is done by the usual text align macros.
+%    \begin{macrocode}
+\def\@@stackbox#1#2[#3]{%
+    \collectbox@
+        {\begin{varwidth}[#2]{\linewidth}\csname adjbox@halign@#1\endcsname#3}
+        \BOXCONTENT
+        {\end{varwidth}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@halign@c}
+% \begin{macro}{\adjbox@halign@l}
+% \begin{macro}{\adjbox@halign@r}
+% \begin{macro}{\adjbox@halign@j}
+% Horizontal alignment macros.
+%    \begin{macrocode}
+\def\adjbox@halign@c{\centering}
+\def\adjbox@halign@l{\raggedright}
+\def\adjbox@halign@r{\raggedleft}
+\def\adjbox@halign@j{\let\\\newline}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{key}{ADJBOX}{stack}
+%    \begin{macrocode}
+\define@key{ADJBOX}{stack}[{}{}{}]{%
+    \adjbox@stack#1{}{}{}\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@stack}
+%    \begin{macrocode}
+\def\adjbox@stack#1#2#3#4\@nnil{%
+    \ifx\@nnil#1\@nnil
+        \adjbox@@stack{c}{b}{}%
+    \else
+    \ifx\@nnil#2\@nnil
+        \adjbox@@stack{#1}{b}{}%
+    \else
+        \adjbox@@stack{#1}{#2}{#3}%
+    \fi\fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@@stack}
+%    \begin{macrocode}
+\def\adjbox@@stack#1#2#3{%
+    \def\adjbox@collectbox##1{%
+        \collectbox@{%
+            \begin{varwidth}[#2]{\linewidth}%
+            \csname adjbox@halign@#1\endcsname#3%
+        }{##1}{\end{varwidth}}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% Load the \pkg{varwidth} package if available or disable the dependent keys if not.
+%    \begin{macrocode}
+\IfFileExists{varwidth.sty}
+    {\RequirePackage{varwidth}}{%
+    \define@key{ADJBOX}{varwidth}{%
+        \PackageError{adjustbox}{The 'varwidth' key requires the 'varwidth' package, which is not installed}{}%
+    }
+    \define@key{ADJBOX}{stack}{%
+        \PackageError{adjustbox}{The 'stack' key requires the 'varwidth' package, which is not installed}{}%
+    }
+}%
+%    \end{macrocode}
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{tabular and array keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% \begin{key}{ADJBOX}{tabular}
+%    \begin{macrocode}
+\define@key{ADJBOX}{tabular}{%
+    \@ifnextchar[{%
+        \adjbox@tabular{tabular}%
+    }{%
+        \adjbox@tabular{tabular}{{#1}}\@nnil%
+        \remove@to@nnil
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@tabular}
+%    \begin{macrocode}
+\def\adjbox@tabular#1#2\@nnil{%
+    \ifcollectboxenv
+        \adjbox@innerenv{#1}{#2}\@nnil
+    \else
+        \def\adjbox@collectbox##1{\collectbox@tab{#1}{#2}{}{##1}{}}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{ADJBOX}{tabular*}
+%    \begin{macrocode}
+\define@key{ADJBOX}{tabular*}{%
+    \adjbox@tabular{tabular*}#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{ADJBOX}{array}
+%    \begin{macrocode}
+\define@key{ADJBOX}{array}{%
+    \@ifnextchar[{%
+        \adjbox@array%
+    }{%
+        \adjbox@array{{#1}}\@nnil%
+        \remove@to@nnil
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@array}
+%    \begin{macrocode}
+\def\adjbox@array#1\@nnil{%
+    \ifcollectboxenv
+        \adjbox@innercode{\(\begin{array}#1}{\end{array}\)}%
+    \else
+        \def\adjbox@collectbox##1{\collectbox@tab{array}{#1}{\(}{##1}{\)}}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Keys for inner environments and code} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+% \begin{key}{ADJBOX}{innerenv}
+%    \begin{macrocode}
+\define@key{ADJBOX}{innerenv}{%
+    \@ifnextchar\bgroup{%
+        \adjbox@@innerenv
+    }{%
+        \adjbox@innerenv{#1}\@nnil%
+        \remove@to@nnil
+    }#1\@nnil
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@innerenv}
+%    \begin{macrocode}
+\def\adjbox@innerenv#1#2\@nnil{%
+    \def\adjbox@collectbox##1{\collectbox@{\begin{#1}#2}{##1}{\end{#1}}}%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjbox@innerenv}
+% \begin{macro}{\adjbox@@innerenv}
+% \begin{macro}{\adjbox@@@innerenv}
+% Used to extract the environment arguments. The issue here is that if a single mandatory argument is used
+% its braces are removed. To avoid that a `|{}|' is always added beforehand and then removed again.
+%    \begin{macrocode}
+\def\adjbox@@innerenv#1{%
+    \adjbox@@@innerenv{#1}{}%
+}%
+\def\adjbox@@@innerenv#1#2\@nnil{%
+    \expandafter\adjbox@@@@innerenv\expandafter{\@gobble#2}{#1}%
+}%
+\def\adjbox@@@@innerenv#1#2{%
+    \adjbox@innerenv{#2}{#1}\@nnil
+}%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{key}{ADJBOX}{innercode}
+%    \begin{macrocode}
+\define@key{ADJBOX}{innercode}{%
+    \adjbox@innercode#1{}{}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@innercode}
+%    \begin{macrocode}
+\def\adjbox@innercode#1#2{%
+    \def\adjbox@collectbox##1{\collectbox@{#1}{##1}{#2}}%
+}%
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Float keys} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{label}
+%    \begin{macrocode}
+\define@key\adjbox@fam{label}{%
+    \def\adjbox@label{\label{#1}}%
+}
+\let\adjbox@label\@empty
+%    \end{macrocode}
+% \end{key}
+%
+%    \begin{macrocode}
+\chardef\adjbox@caption@pos=11
+%    \end{macrocode}
+%
+% \begin{key}{adjbox}{captionabove}
+%    \begin{macrocode}
+\define@key\adjbox@fam{captionabove}{%
+    \chardef\adjbox@caption@pos=1
+    \csname KV@\adjbox@fam @caption\endcsname{#1}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{captionbelow}
+%    \begin{macrocode}
+\define@key\adjbox@fam{captionbelow}{%
+    \chardef\adjbox@caption@pos=0
+    \csname KV@\adjbox@fam @caption\endcsname{#1}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{caption}
+%    \begin{macrocode}
+\define@key\adjbox@fam{caption}{%
+    \@ifnextchar{[}{%
+        \adjbox@def@caption
+    }{%
+        \adjbox@def@@caption
+    }#1\@nnil
+}
+\def\adjbox@def@@caption#1\@nnil{%
+    \def\adjbox@caption{\caption{#1}}%
+}
+\def\adjbox@def@caption[#1]#2\@nnil{%
+    \def\adjbox@caption{\caption[#1]{#2}}%
+}
+\let\adjbox@caption\@empty
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{figure}
+%    \begin{macrocode}
+\define@key\adjbox@fam{figure}[]{%
+    \let\adjustbox@noindent\relax
+    \ifx\@nnil#1\@nnil
+        \adjbox@addfloat{figure}{\begin{figure}}{}{\end{figure}}%
+    \else
+        \adjbox@addfloat{figure}{\begin{figure}}{[{#1}]}{\end{figure}}%
+    \fi
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{float}
+%    \begin{macrocode}
+\define@key\adjbox@fam{float}{%
+    \let\adjustbox@noindent\relax
+    \@ifnextchar\bgroup{%
+        \adjbox@float
+    }{%
+        \adjbox@float{#1}{}\@nnil
+        \remove@to@nnil
+    }#1\@nnil
+}
+\def\adjbox@float#1#2\@nnil{%
+    \adjbox@addfloat{#1}{\begin{#1}}{#2}{\end{#1}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{nofloat}
+%    \begin{macrocode}
+\define@key\adjbox@fam{nofloat}[figure]{%
+    \adjbox@addfloat{#1}{\adjnofloat}{{#1}}{\endadjnofloat}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\adjbox@caption@table@pos}
+%    \begin{macrocode}
+\def\adjbox@caption@table@pos{1}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\adjbox@addfloat}
+%    \begin{macrocode}
+\def\adjbox@addfloat#1#2#3#4{%
+    \ifnum\adjbox@caption@pos>10
+        \chardef\adjbox@caption@pos=0\csname adjbox@caption@#1@pos\endcsname\relax
+    \fi
+    \ifcase\adjbox@caption@pos
+        \def\@tempa{\adjust@addcode{#2#3}}%
+        \expandafter\expandafter\expandafter\@tempa
+        \expandafter\expandafter\expandafter{\expandafter\adjbox@caption\adjbox@label#4}%
+    \else
+        \def\@tempa##1{\adjust@addcode{#2#3\adjbox@captionabove##1}}%
+        \expandafter\expandafter\expandafter\@tempa
+        \expandafter\expandafter\expandafter
+        {\expandafter\adjbox@caption\adjbox@label}{#4}%
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\adjbox@captionabove}
+%    \begin{macrocode}
+\@ifpackageloaded{caption}{%
+    \let\adjbox@captionabove\relax
+}{%
+    \def\adjbox@captionabove{%
+        \begingroup
+        \edef\@tempa{\endgroup
+            \abovecaptionskip=\the\belowcaptionskip\relax
+            \belowcaptionskip=\the\abovecaptionskip\relax
+        }%
+        \@tempa
+    }%
+    \AtBeginDocument{%
+        \@ifpackageloaded{caption}{%
+            \global\let\adjbox@captionabove\relax
+        }{}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% \begin{environment}{adjnofloat}
+% Environment used for non-floats.
+%    \begin{macrocode}
+\newenvironment{adjnofloat}[1]{%
+    \trivlist
+    \def\@captype{#1}%
+    \parindent\z@
+    \item\relax
+}{%
+    \endtrivlist
+}
+%    \end{macrocode}
+% \end{environment}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Change or discard the content} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{phantom}
+%    \begin{macrocode}
+\define@key\adjbox@fam{phantom}[]{%
+    \expandafter\ifx\csname #1phantom\endcsname\relax
+        \adjust@addcode{\phantom}{}%
+    \else
+        \expandafter\adjust@addcode\expandafter{\csname #1phantom\endcsname}{}%
+    \fi
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\phantombox}[3]{width}{height}{depth}
+% Produces an empty box with the given width, height and depth.
+%    \begin{macrocode}
+\newcommand*\phantombox[3]{%
+    \begingroup
+    \adjsetlength\@tempdima{#1}%
+    \adjsetlength\@tempdimb{#2}%
+    \adjsetlength\@tempdimc{#3}%
+    \setbox\collectedbox\hbox{}%
+    \wd\collectedbox\@tempdima
+    \ht\collectedbox\@tempdimb
+    \dp\collectedbox\@tempdimc
+    \leavevmode
+    \box\collectedbox
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{gobble}
+% Discards the content.
+%    \begin{macrocode}
+\define@key\adjbox@fam{gobble}[\@nil]{%
+    \adjbox@novalue{#1}%
+    \let\adjustbox@noindent\relax
+    \adjbox@Gin@Add{\@Collectbox{}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{discard}
+% Alias of \Key{gobble}.
+%    \begin{macrocode}
+\adjbox@let@key\adjbox@fam{discard}{gobble}%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{adjbox}{content}
+% Replaces the content. The old content is still processed completely before being replaced..
+%    \begin{macrocode}
+\define@adjboxkey{content}{\@Collectbox{#1}}%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Store box content and sizes} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{key}{adjbox}{gstore}
+% Store the current content into a box without removing it.
+%    \begin{macrocode}
+\define@adjboxkey{gstore}{\global\@collectboxto{#1}{\BOXCONTENT}}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{gstore*}
+% Store the content into a box only.
+%    \begin{macrocode}
+\define@key\adjbox@fam{gstore*}{%
+    \let\adjustbox@noindent\relax
+    \adjbox@Gin@Add{\global\sbox{#1}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{gstore width}
+%    \begin{macrocode}
+\define@key{adjbox}{gstore width}{%
+    \adjbox@Gin@Add{\@Collectbox{\global#1=\width\BOXCONTENT}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{gstore depth}
+%    \begin{macrocode}
+\define@key{adjbox}{gstore depth}{%
+    \adjbox@Gin@Add{\@Collectbox{\global#1=\depth\BOXCONTENT}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{gstore height}
+%    \begin{macrocode}
+\define@key{adjbox}{gstore height}{%
+    \adjbox@Gin@Add{\@Collectbox{\global#1=\height\BOXCONTENT}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{gstore totalheight}
+%    \begin{macrocode}
+\define@key{adjbox}{gstore totalheight}{%
+    \adjbox@Gin@Add{\@Collectbox{\global#1=\totalheight\BOXCONTENT}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{key}{adjbox}{gstore sizes}
+%    \begin{macrocode}
+\define@key{adjbox}{gstore sizes}{%
+    \adjbox@Gin@Add{\@Collectbox{\adjbox@gstore@sizes#1\relax\relax\relax\relax\@nnil\BOXCONTENT}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+% \begin{macro}{\adjbox@gstore@sizes}[4]{width register}{height register}{depth register}{totalheight register}
+% Stores the width, height, depth and totalheight in the given registers if they are not empty (or \Macro\relax).
+%    \begin{macrocode}
+\def\adjbox@gstore@sizes#1#2#3#4#5\@nnil{%
+    \ifx\relax#1\relax\else
+        \global#1=\width
+    \fi
+    \ifx\relax#2\relax\else
+        \global#2=\height
+    \fi
+    \ifx\relax#3\relax\else
+        \global#3=\depth
+    \fi
+    \ifx\relax#4\relax\else
+        \global#4=\totalheight
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Experimental split and pagebreak keys and macros} ^^A (((
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    \begin{macrocode}
+%%\RequirePackage{storebox}
+%    \end{macrocode}
+%
+% \begin{macro}{\splitbox}
+%    \begin{macrocode}
+\newcommand\splitbox[2]{%
+    \collectboxcheckenv{splitbox}%
+    \@collectbox{\@splitbox{#1}{#2}}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{adjbox}{split}
+%    \begin{macrocode}
+\define@adjboxkey{split}{\@Collectbox{\@splitbox#1}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\@splitbox}
+%    \begin{macrocode}
+\def\@splitbox#1#2{%
+    \ifstorebox
+        \storebox\splittedbox{\BOXCONTENT}%
+        \setbox\collectedbox\hbox{\usestorebox\splittedbox}%
+    \fi
+    \xdef\@tempa{#1}%
+    \xdef\@tempb{#2}%
+    \ifx\@tempa\Gin@exclamation
+        \@tempdima\maxdimen
+    \else
+        \adjsetlength\@tempdima\@tempa
+    \fi
+    \ifx\@tempb\Gin@exclamation
+        \Gin@nat@height\maxdimen
+    \else
+        \adjsetlength\Gin@nat@height\@tempb
+    \fi
+    \ifdim\@tempdima>\width
+        \@tempdima\width
+    \fi
+    \ifdim\Gin@nat@height>\totalheight
+        \Gin@nat@height\totalheight
+    \fi
+    \tc@llx\z@
+    \tc@lly\totalheight
+    \tc@urx\width
+    \tc@ury\z@
+    \advance\tc@lly-\Gin@nat@height
+    \@@splitbox
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@@splitbox}
+%    \begin{macrocode}
+\def\@@splitbox{%
+    \advance\tc@urx-\@tempdima
+    \@@@splitbox
+    \ifdim\tc@urx>\z@
+        \advance\tc@llx+\@tempdima
+        \expandafter\@@splitbox
+    \else
+        \ifdim\tc@lly<\splitbox@epsilon
+            \splitboxlastnewline
+        \else
+            \splitboxnewline
+            \tc@llx\z@
+            \tc@urx\width
+            \advance\tc@lly-\Gin@nat@height
+            \advance\tc@ury+\Gin@nat@height
+            \expandafter\expandafter
+            \expandafter\@@splitbox
+        \fi
+    \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@@@splitbox}
+%    \begin{macrocode}
+\def\@@@splitbox{%
+    \begingroup
+    \setbox\collectedbox=\copy\collectedbox
+    \@clipbox\collectedbox\tc@llx\tc@lly\tc@urx\tc@ury
+    \splitboxcmd{\usebox\collectedbox}%
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@@splitbox}
+%    \begin{macrocode}
+\def\@@@splitbox{%
+    \begingroup
+    \setbox\collectedbox=\copy\collectedbox
+    \@clipbox\collectedbox\tc@llx\tc@lly\tc@urx\tc@ury
+    \splitboxcmd{\usebox\collectedbox}%
+    \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\splitboxcmd}
+%    \begin{macrocode}
+\let\splitboxcmd\empty
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\splitboxnewline}
+%    \begin{macrocode}
+\newcommand\splitboxnewline{\\}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\splitboxlastnewline}
+%    \begin{macrocode}
+\newcommand\splitboxlastnewline{\splitboxnewline}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\splitbox@epsilon}
+%    \begin{macrocode}
+\def\splitbox@epsilon{100sp}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \begin{macro}{\pagebreakbox}
+%    \begin{macrocode}
+\newcommand\pagebreakbox{%
+    \par\noindent
+    \collectboxcheckenv{pagebreakbox}%
+    \@collectbox{\@pagebreakbox}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{key}{adjbox}{pagebreak}
+%    \begin{macrocode}
+\define@key\adjbox@fam{pagebreak}[]{%
+    \adjbox@Gin@Add{\@Collectbox{\@pagebreakbox}}%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%
+%
+% \begin{macro}{\@pagebreakbox}
+% Used internal macros:
+%
+% \begin{tabular}{ll}
+%   \Macro\@tempa      & Caption code \\
+%   \Macro\@tempboxa   & Caption box  \\
+%   \Macro\tc@lly & Lower clip amount \\
+%   \Macro\tc@ury & Lower clip amount \\
+% \end{tabular}
+%    \begin{macrocode}
+\def\@pagebreakbox{%
+    \sbox\collectedbox{\raise\dp\collectedbox\hbox{\BOXCONTENT}}%
+    \ifstorebox
+        \storebox\splittedbox{\BOXCONTENT}%
+        \setbox\collectedbox\hbox{\usestorebox\splittedbox}%
+    \fi
+    \adjsetlength\tc@lly
+        {\totalheight-\pagegoal+\pagetotal+\pagebreakboxoffset}%
+    \ifdim\tc@lly>\z@
+        \begingroup
+        \setbox\collectedbox=\copy\collectedbox
+        \@clipbox\collectedbox\z@\tc@lly\z@\z@
+        \BOXCONTENT
+        \endgroup
+        \par\noindent
+        \adjsetlength\tc@ury{\totalheight-\tc@lly}%
+        \ifdim\tc@lly>\textheight
+            \loop
+                \advance\tc@lly-\textheight
+                \begingroup
+                \setbox\collectedbox=\copy\collectedbox
+                \@clipbox\collectedbox\z@\tc@lly\z@\tc@ury
+                \BOXCONTENT
+                \endgroup
+                \advance\tc@ury\textheight
+                \par\noindent
+                \ifdim\tc@lly>\textheight
+            \repeat
+            \@clipbox\collectedbox\z@\z@\z@\tc@ury
+            \BOXCONTENT
+        \else
+            \@clipbox\collectedbox\z@\z@\z@\tc@ury
+            \par\noindent
+            \BOXCONTENT
+        \fi
+    \else
+        \BOXCONTENT%
+    \fi
+    \par
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\pagebreakboxoffset}
+%    \begin{macrocode}
+\newcommand*\pagebreakboxoffset{\ht\strutbox}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% ^^A )))
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% vim: foldenable foldmethod=marker foldmarker=(((,)))
+% \iffalse
+%</adjustbox.sty>
+% \fi
+%
+% ^^A )))
+% \Finale
+% \endinput
+% ^^A vim: foldenable foldmethod=marker foldmarker=(((,)))

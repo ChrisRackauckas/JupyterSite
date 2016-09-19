@@ -28,12 +28,16 @@ for f in "${arr[@]}"; do
    # Move to the html directory
    mv Notebooks/"$filename".md  Markdown/"$filename".md
 
-   # Convert the Notebook to PDF
+   # Convert the Notebook to Latex
    jupyter-nbconvert --to latex Notebooks/"$filename".ipynb
-   mv Notebooks/"$filename".tex  Notebooks/notebook.tex
-   jupyter-nbconvert --to pdf Notebooks/"$filename".ipynb
+   mv Notebooks/"$filename".tex  Tex/"$filename".tex
+
+   # Convert the Notebook to Pdf
+   cd Notebooks
+   jupyter-nbconvert --to pdf "$filename".ipynb
    # Move to the html directory
-   mv Notebooks/"$filename".pdf  Pdfs/"$filename".pdf
+   mv "$filename".pdf  ../Pdfs/"$filename".pdf
+   cd .. 
 done
 
 # Push the updates to gh-pages
