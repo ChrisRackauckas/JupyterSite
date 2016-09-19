@@ -9,6 +9,12 @@ It just takes one button, simplifying the entire process. The `publish.sh` file
 does all the heavy lifting, showing you how to do all of this (any of the conversions
 can be disabled by commenting out the appropriate lines).
 
+## Example Site
+
+An example of the product this package generates can be found at: https://github.com/UCIDataScienceInitiative/IntroToJulia .
+
+The site that this generates is: http://UCIDataScienceInitiative.github.io/IntroToJulia/
+
 ## Installation
 
 To use this, first install Jupyter (note: Python must be installed)
@@ -95,3 +101,33 @@ file. To run the tests locally, use the commands
 ```julia
 Pkg.test("JupyterSite")
 ```
+
+# Example Output
+
+The example notebooks can be found at:
+
+https://github.com/ChrisRackauckas/JupyterSite/blob/master/Notebooks
+
+## HTML
+
+https://chrisrackauckas.github.io/JupyterSite/
+
+https://chrisrackauckas.github.io/JupyterSite/Html/GithubIntroduction.html
+
+## Slides
+
+https://chrisrackauckas.github.io/JupyterSite/
+
+https://chrisrackauckas.github.io/JupyterSite/Slides/GithubIntroduction.html
+
+## Markdown
+
+https://github.com/ChrisRackauckas/JupyterSite/tree/master/Markdown
+
+## LaTeX
+
+https://github.com/ChrisRackauckas/JupyterSite/tree/master/Tex
+
+## PDF
+
+https://github.com/ChrisRackauckas/JupyterSite/tree/master/Pdfs
