@@ -113,13 +113,15 @@ https://github.com/ChrisRackauckas/JupyterSite/blob/master/Notebooks
 
 ## HTML
 
-https://github.com/ChrisRackuckas/JupyterSite/index.html
-https://github.com/ChrisRackuckas/JupyterSite/Html/GithubIntroduction.html
+https://chrisrackauckas.github.io/JupyterSite/
+
+https://chrisrackauckas.github.io/JupyterSite/Html/GithubIntroduction.html
 
 ## Slides
 
-https://github.com/ChrisRackuckas/JupyterSite/Slides/index.html
-https://github.com/ChrisRackuckas/JupyterSite/Slides/GithubIntroduction.html
+https://chrisrackauckas.github.io/JupyterSite/
+
+https://chrisrackauckas.github.io/JupyterSite/Slides/GithubIntroduction.html
 
 ## Markdown
 
