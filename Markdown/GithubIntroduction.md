@@ -34,5 +34,9 @@ An example Github repository for a Julia package is is DifferentialEquations.jl:
 
 ## Examining a Github Repository
 
-![GithubTop](JupyterSite/assets/GithubTop.PNG "Title")
+![GithubTop](https://github.com/ChrisRackauckas/JupyterSite/raw/master/assets/GithubTop.PNG "Top of a Github Repository")
 
+
+## Examining A Github Repository
+
+![GithubBadges](https://github.com/ChrisRackauckas/JupyterSite/raw/master/assets/GithubBadges.PNG "Badges of a Github Repository")
