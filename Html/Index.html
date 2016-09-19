@@ -11748,7 +11748,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-Nontrivial-Introduction-to-Julia-for-Data-Science-and-Scientific-Computing">A Nontrivial Introduction to Julia for Data Science and Scientific Computing<a class="anchor-link" href="#A-Nontrivial-Introduction-to-Julia-for-Data-Science-and-Scientific-Computing">&#182;</a></h1>
+<h1 id="Jupyter-Site">Jupyter Site<a class="anchor-link" href="#Jupyter-Site">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -11757,7 +11757,172 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="http://ucidatascienceinitiative.github.io/IntroToJulia/Slides/ArraysAndMatrices.html">http://ucidatascienceinitiative.github.io/IntroToJulia/Slides/ArraysAndMatrices.html</a></p>
+<p>JupyterSite allows you to easily build a suite of rendered documents from Jupyter
+notebooks. Jupyter notebooks go in, html/markdown pages, PDFs, slideshows, and tex
+comes out. If you use this in a Github repository, it will even build a Github pages
+site. This also shows how to make the notebooks easily accessible in Julia.</p>
+<p>It just takes one button, simplifying the entire process. The <code>publish.sh</code> file
+does all the heavy lifting, showing you how to do all of this (any of the conversions
+can be disabled by commenting out the appropriate lines).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Example-Site">Example Site<a class="anchor-link" href="#Example-Site">&#182;</a></h2><p>An example of the product this package generates can be found at: <a href="https://github.com/UCIDataScienceInitiative/IntroToJulia">https://github.com/UCIDataScienceInitiative/IntroToJulia</a> .</p>
+<p>The site that this generates is: <a href="http://UCIDataScienceInitiative.github.io/IntroToJulia/">http://UCIDataScienceInitiative.github.io/IntroToJulia/</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h2><p>To use this, first install Jupyter (note: Python must be installed)</p>
+<div class="highlight"><pre>pip install jupyter
+</pre></div>
+<p>For the PDF output to work, a distribution of LaTeX must be installed. Also, we
+will need pandoc:</p>
+<div class="highlight"><pre>pip install pandoc
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Using-the-Package">Using the Package<a class="anchor-link" href="#Using-the-Package">&#182;</a></h2><h3 id="Downloading-the-Template">Downloading the Template<a class="anchor-link" href="#Downloading-the-Template">&#182;</a></h3><p>The easiest way to get started is to clone the package repository using Git:</p>
+<div class="highlight"><pre>git clone https://github.com/ChrisRackauckas/JupyterSite
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="The-Notebooks">The Notebooks<a class="anchor-link" href="#The-Notebooks">&#182;</a></h3><p>The files which the site is built from are the notebooks that are included in
+the Notebooks folder. The <code>Index.ipynb</code> file build the site index (the first
+page shown in the webpage) and additional <code>.ipynb</code> files are rendered in the various
+forms. Thus to add your own content, simply add the <code>.ipynb</code> files to this directory.</p>
+<p>Note that notebooks have to be setup for slides in order for the slideshow to work.
+Inside the notebook, use view &gt; CellToolbar &gt; Slideshow and set the appropriate blocks
+to slides.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Building-The-Site">Building The Site<a class="anchor-link" href="#Building-The-Site">&#182;</a></h3><p>To build the site files, use the <code>publish.sh</code> file. To do so, go to the top directory
+of the repository and use the command:</p>
+<div class="highlight"><pre>sh publish.sh
+</pre></div>
+<p>If your Git is correctly setup, this will render the files and upload the files to
+Github. Upon success, your <code>index.html</code> will be available at:</p>
+
+<pre><code>http://&lt;github-username&gt;.github.io/&lt;repository-name&gt;/</code></pre>
+<p>For example, my user name is ChrisRackauckas and this repository is named JupyterSite.
+Therefore the site for that this makes is at</p>
+
+<pre><code>http://ChrisRackauckas.github.io/JupyterSite/</code></pre>
+<p>For organizations, the user name is replaced with the organization name.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Easy-Usage-from-Julia">Easy Usage from Julia<a class="anchor-link" href="#Easy-Usage-from-Julia">&#182;</a></h2><p>This repository is also setup as a Julia package repository. To have users easily
+open up the Jupyter notebooks, they can use the commands from within Julia:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre>Pkg.add(&quot;IJulia&quot;) # use once to install IJulia
+Pkg.clone(&quot;https://github.com/ChrisRackauckas/JupyterSite&quot;) # Change this to your Github repo
+using IJulia
+notebook(dir=Pkg.dir(&quot;JupyterSite&quot;)*&quot;/Notebooks&quot;)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This will open up the Jupyter notebook at the location of your notebooks</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Additional-Feature:-Continuous-Integration-Testing">Additional Feature: Continuous Integration Testing<a class="anchor-link" href="#Additional-Feature:-Continuous-Integration-Testing">&#182;</a></h3><p>One can use Julia's continuous integration testing framework to test your notebooks.
+To do so, check out <a href="http://www.stochasticlifestyle.com/finalizing-julia-package-documentation-testing-coverage-publishing/">this blog post</a>
+for how to setup Julia CI and <a href="https://github.com/stevengj/NBInclude.jl">NBinclude.jl</a> for how
+to include notebook files into Julia. Use this to add tests to the test/runtests.jl
+file. To run the tests locally, use the commands</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre>Pkg.test(&quot;JupyterSite&quot;)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Example-Output">Example Output<a class="anchor-link" href="#Example-Output">&#182;</a></h1><p>The example notebooks can be found at:</p>
+<p><a href="https://github.com/ChrisRackauckas/JupyterSite/blob/master/Notebooks">https://github.com/ChrisRackauckas/JupyterSite/blob/master/Notebooks</a></p>
+<h2 id="HTML">HTML<a class="anchor-link" href="#HTML">&#182;</a></h2><p><a href="https://github.com/ChrisRackuckas/JupyterSite/index.html">https://github.com/ChrisRackuckas/JupyterSite/index.html</a>
+<a href="https://github.com/ChrisRackuckas/JupyterSite/Html/GithubIntroduction.html">https://github.com/ChrisRackuckas/JupyterSite/Html/GithubIntroduction.html</a></p>
+<h2 id="Slides">Slides<a class="anchor-link" href="#Slides">&#182;</a></h2><p><a href="https://github.com/ChrisRackuckas/JupyterSite/Slides/index.html">https://github.com/ChrisRackuckas/JupyterSite/Slides/index.html</a>
+<a href="https://github.com/ChrisRackuckas/JupyterSite/Slides/GithubIntroduction.html">https://github.com/ChrisRackuckas/JupyterSite/Slides/GithubIntroduction.html</a></p>
+<h2 id="Markdown">Markdown<a class="anchor-link" href="#Markdown">&#182;</a></h2><p><a href="https://github.com/ChrisRackauckas/JupyterSite/tree/master/Markdown">https://github.com/ChrisRackauckas/JupyterSite/tree/master/Markdown</a></p>
+<h2 id="LaTeX">LaTeX<a class="anchor-link" href="#LaTeX">&#182;</a></h2><p><a href="https://github.com/ChrisRackauckas/JupyterSite/tree/master/Tex">https://github.com/ChrisRackauckas/JupyterSite/tree/master/Tex</a></p>
+<h2 id="PDF">PDF<a class="anchor-link" href="#PDF">&#182;</a></h2><p><a href="https://github.com/ChrisRackauckas/JupyterSite/tree/master/Pdfs">https://github.com/ChrisRackauckas/JupyterSite/tree/master/Pdfs</a></p>
 
 </div>
 </div>

@@ -31,3 +31,7 @@ Because of this, it's very useful for everyone using Julia to know a little bit 
 - Many projects are brought together into **organizations** (JuliaMath, JuliaDiffEq, JuliaStats, etc.) 
 
 An example Github repository for a Julia package is is DifferentialEquations.jl: https://github.com/JuliaDiffEq/DifferentialEquations.jl
+
+## Using the Package Manager
+
+To 
