@@ -136,3 +136,9 @@ https://github.com/ChrisRackauckas/JupyterSite/tree/master/Tex
 ## PDF
 
 https://github.com/ChrisRackauckas/JupyterSite/tree/master/Pdfs
+
+
+# Live Notebooks
+
+For mixing the "live" part of the notebook with slideshows, try [RISE](https://github.com/damianavila/RISE).
+RISE works with the notebooks included in this repository.
