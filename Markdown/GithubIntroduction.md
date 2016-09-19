@@ -36,7 +36,21 @@ An example Github repository for a Julia package is is DifferentialEquations.jl:
 
 ![GithubTop](https://github.com/ChrisRackauckas/JupyterSite/raw/master/assets/GithubTop.PNG "Top of a Github Repository")
 
+Components:
+
+- Top Left: Username/Repository name
+- Top Right: The stars. Click this button to show support for the developer!
+- Issues Tab: Go here to file a bug report
+- Files: These are the source files in the repository
+
 
 ## Examining A Github Repository
 
 ![GithubBadges](https://github.com/ChrisRackauckas/JupyterSite/raw/master/assets/GithubBadges.PNG "Badges of a Github Repository")
+
+The badges on a Github repository show you the current state of the repo. From left to right:
+
+- Gitter Badge: Click this to go to a chatroom and directly chat with the developers
+- CI Build Badges: This tell you whether the CI tests pass. Click on them to see what versions of Julia the package works for.
+- Coverage: This tells you the percentage of the code that the tests cover. If coverage is low, parts of the package may not work even if the CI tests pass.
+- Docs Badges: Click on these to go to the package documentation.
