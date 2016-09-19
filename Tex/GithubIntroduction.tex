@@ -386,6 +386,98 @@ repo. From left to right:
   Docs Badges: Click on these to go to the package documentation.
 \end{itemize}
 
+    \subsection{Using Julia's Package
+Manager}\label{using-julias-package-manager}
+
+\subsubsection{Adding a Package}\label{adding-a-package}
+
+Julia's package manager functions are mirror the Git functions. Julia's
+package system is similar to R/Python in that a large number of packages
+are freely available. You search for them in places like
+\href{http://genieframework.com/packages}{Julia's Package Genie}, or
+from the \href{http://pkg.julialang.org/}{Julia Package Listing}. Let's
+take a look at the \href{https://github.com/tbreloff/Plots.jl}{Plots.jl
+package by Tom Breloff}. To add a package, use \texttt{Pkg.add}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} Pkg.update() \PYZsh{} You may need to update your local packages first
+        Pkg.add("Plots")
+\end{Verbatim}
+
+    This will install the package to your local system. However, this will
+only work for registered packages. To add a non-registered package, go
+to the Github repository to find the clone URL and use
+\texttt{Pkg.clone}. For example, to install the
+\texttt{ParameterizedFunctions} package, we can use:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} Pkg.clone("https://github.com/JuliaDiffEq/ParameterizedFunctions.jl")
+\end{Verbatim}
+
+    \subsubsection{Importing a Package}\label{importing-a-package}
+
+To use a package, you have to import the package. The \texttt{import}
+statement will import the package without exporting the functions to the
+namespace. (Note that the first time a package is run, it will
+precompile a lot of the functionality.) For example:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} import Plots
+        Plots.plot(rand(4,4))
+\end{Verbatim}
+
+    \subsubsection{Exporting Functionality}\label{exporting-functionality}
+
+To instead export the functions (of the developers choosing) to the
+namespace, we can use the \texttt{using} statement. Since Plots.jl
+exports the \texttt{plot} command, we can then use it without reference
+to the package that it came from:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} using Plots
+        plot(rand(4,4))
+\end{Verbatim}
+
+    What really makes this possible in Julia but not something like Python
+is that namespace clashes are usually avoided by multiple dispatch. Most
+packages will define their own types in order to use dispatches, and so
+when they export the functionality, the methods are only for their own
+types and thus do not clash with other packages. Therefore it's common
+in Julia for concise syntax like \texttt{plot} to be part of packages,
+all without fear of clashing.
+
+    \subsection{Getting on the Latest
+Version}\label{getting-on-the-latest-version}
+
+Since Julia is currently under lots of development, you may wish to
+checkout newer versions. By default, \texttt{Pkg.add} is the ``latest
+release'', meaning the latest tagged version. However, the main version
+shown in the Github repository is usually the ``master'' branch. It's
+good development practice that the latest release is kept ``stable'',
+while the ``master'' branch is kept ``working'', and development takes
+place in another branch (many times labelled ``dev''). You can choose
+which branch your local repository takes from. For example, to checkout
+the master branch, we can use:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} Pkg.checkout("Plots")
+\end{Verbatim}
+
+    This will usually gives us pretty up to date features (if you are using
+a ``unreleased version of Julia'' like building from the source of the
+Julia nightly, you may need to checkout master in order to get some
+packages working). However, to go to a specific branch we can give the
+branch as another argument:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} Pkg.checkout("Plots","dev")
+\end{Verbatim}
+
+    This is not advised if you don't know what you're doing (i.e.~talk to
+the developer or read the pull requests (PR)), but this is common if you
+talk to a developer and they say ``yes, I already implemented that.
+Checkout the dev branch and use \texttt{plot(...)}.
+
 
     % Add a bibliography block to the postdoc
     
