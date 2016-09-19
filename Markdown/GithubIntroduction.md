@@ -32,6 +32,7 @@ Because of this, it's very useful for everyone using Julia to know a little bit 
 
 An example Github repository for a Julia package is is DifferentialEquations.jl: https://github.com/JuliaDiffEq/DifferentialEquations.jl
 
-## Using the Package Manager
+## Examining a Github Repository
 
-To 
+![GithubTop](JupyterSite/assets/GithubTop.PNG "Title")
+
