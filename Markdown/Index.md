@@ -119,7 +119,7 @@ https://chrisrackauckas.github.io/JupyterSite/Html/GithubIntroduction.html
 
 ## Slides
 
-https://chrisrackauckas.github.io/JupyterSite/
+https://chrisrackauckas.github.io/JupyterSite/Slides/Index.html
 
 https://chrisrackauckas.github.io/JupyterSite/Slides/GithubIntroduction.html
 
