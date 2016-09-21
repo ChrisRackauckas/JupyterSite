@@ -11588,8 +11588,10 @@ ul.typeahead-list > li > a {
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
 .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
 .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
 .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
 .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
@@ -11597,11 +11599,11 @@ ul.typeahead-list > li > a {
 .highlight .gr { color: #FF0000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
 .highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .go { color: #888888 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
 .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
 .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
 .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
@@ -11624,6 +11626,7 @@ ul.typeahead-list > li > a {
 .highlight .nv { color: #19177C } /* Name.Variable */
 .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
 .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
 .highlight .mf { color: #666666 } /* Literal.Number.Float */
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
@@ -11785,11 +11788,11 @@ can be disabled by commenting out the appropriate lines).</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Installation">Installation<a class="anchor-link" href="#Installation">&#182;</a></h2><p>To use this, first install Jupyter (note: Python must be installed)</p>
-<div class="highlight"><pre>pip install jupyter
+<div class="highlight"><pre><span></span>pip install jupyter
 </pre></div>
 <p>For the PDF output to work, a distribution of LaTeX must be installed. Also, we
 will need pandoc:</p>
-<div class="highlight"><pre>pip install pandoc
+<div class="highlight"><pre><span></span>pip install pandoc
 </pre></div>
 
 </div>
@@ -11801,7 +11804,7 @@ will need pandoc:</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Using-the-Package">Using the Package<a class="anchor-link" href="#Using-the-Package">&#182;</a></h2><h3 id="Downloading-the-Template">Downloading the Template<a class="anchor-link" href="#Downloading-the-Template">&#182;</a></h3><p>The easiest way to get started is to clone the package repository using Git:</p>
-<div class="highlight"><pre>git clone https://github.com/ChrisRackauckas/JupyterSite
+<div class="highlight"><pre><span></span>git clone https://github.com/ChrisRackauckas/JupyterSite
 </pre></div>
 
 </div>
@@ -11830,7 +11833,7 @@ to slides.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Building-The-Site">Building The Site<a class="anchor-link" href="#Building-The-Site">&#182;</a></h3><p>To build the site files, use the <code>publish.sh</code> file. To do so, go to the top directory
 of the repository and use the command:</p>
-<div class="highlight"><pre>sh publish.sh
+<div class="highlight"><pre><span></span>sh publish.sh
 </pre></div>
 <p>If your Git is correctly setup, this will render the files and upload the files to
 Github. Upon success, your <code>index.html</code> will be available at:</p>
@@ -11872,10 +11875,10 @@ open up the Jupyter notebooks, they can use the commands from within Julia:</p>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre>Pkg.add(&quot;IJulia&quot;) # use once to install IJulia
-Pkg.clone(&quot;https://github.com/ChrisRackauckas/JupyterSite&quot;) # Change this to your Github repo
-using IJulia
-notebook(dir=Pkg.dir(&quot;JupyterSite&quot;)*&quot;/Notebooks&quot;)
+<div class=" highlight hl-julia"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;IJulia&quot;</span><span class="p">)</span> <span class="c"># use once to install IJulia</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/ChrisRackauckas/JupyterSite&quot;</span><span class="p">)</span> <span class="c"># Change this to your Github repo</span>
+<span class="k">using</span> <span class="n">IJulia</span>
+<span class="n">notebook</span><span class="p">(</span><span class="n">dir</span><span class="o">=</span><span class="n">Pkg</span><span class="o">.</span><span class="n">dir</span><span class="p">(</span><span class="s">&quot;JupyterSite&quot;</span><span class="p">)</span><span class="o">*</span><span class="s">&quot;/Notebooks&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -11912,7 +11915,7 @@ file. To run the tests locally, use the commands</p>
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre>Pkg.test(&quot;JupyterSite&quot;)
+<div class=" highlight hl-julia"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="s">&quot;JupyterSite&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>

@@ -11642,8 +11642,10 @@ ul.typeahead-list > li > a {
 .highlight .err { border: 1px solid #FF0000 } /* Error */
 .highlight .k { color: #008000; font-weight: bold } /* Keyword */
 .highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
 .highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
 .highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
 .highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
 .highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
 .highlight .gd { color: #A00000 } /* Generic.Deleted */
@@ -11651,11 +11653,11 @@ ul.typeahead-list > li > a {
 .highlight .gr { color: #FF0000 } /* Generic.Error */
 .highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
 .highlight .gi { color: #00A000 } /* Generic.Inserted */
-.highlight .go { color: #808080 } /* Generic.Output */
+.highlight .go { color: #888888 } /* Generic.Output */
 .highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .highlight .gs { font-weight: bold } /* Generic.Strong */
 .highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight .gt { color: #0040D0 } /* Generic.Traceback */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
 .highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
 .highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
 .highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
@@ -11678,6 +11680,7 @@ ul.typeahead-list > li > a {
 .highlight .nv { color: #19177C } /* Name.Variable */
 .highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
 .highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
 .highlight .mf { color: #666666 } /* Literal.Number.Float */
 .highlight .mh { color: #666666 } /* Literal.Number.Hex */
 .highlight .mi { color: #666666 } /* Literal.Number.Integer */
@@ -11824,16 +11827,51 @@ a.anchor-link {
 <section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">notebook.services.config</span> <span class="kn">import</span> <span class="n">ConfigManager</span>
-<span class="n">cm</span> <span class="o">=</span> <span class="n">ConfigManager</span><span class="p">()</span>
-<span class="n">cm</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s">&#39;livereveal&#39;</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s">&#39;width&#39;</span><span class="p">:</span> <span class="mi">1600</span><span class="p">,</span>
-        <span class="s">&#39;height&#39;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
-        <span class="s">&#39;scroll&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">traitlets.config.manager</span> <span class="kn">import</span> <span class="n">BaseJSONConfigManager</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/home/crackauc/.jupyter/nbconfig&quot;</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">BaseJSONConfigManager</span><span class="p">(</span><span class="n">config_dir</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">cm</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;livereveal&#39;</span><span class="p">,</span> <span class="p">{</span>
+              <span class="s1">&#39;theme&#39;</span><span class="p">:</span> <span class="s1">&#39;sky&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;transition&#39;</span><span class="p">:</span> <span class="s1">&#39;fade&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;start_slideshow_at&#39;</span><span class="p">:</span> <span class="s1">&#39;selected&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;width&#39;</span> <span class="p">:</span> <span class="mi">1600</span><span class="p">,</span>
+                <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="mi">900</span><span class="p">,</span>
+                <span class="s1">&#39;scroll&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s1">&#39;slideNumber&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
 <span class="p">})</span>
+
+<span class="c1">#</span>
+<span class="c1">#from notebook.services.config import ConfigManager</span>
+<span class="c1">#cm = ConfigManager()</span>
+<span class="c1">#cm.update(&#39;livereveal&#39;, {</span>
+<span class="c1">#        &#39;width&#39;: 1600,</span>
+<span class="c1">#        &#39;height&#39;: 800,</span>
+<span class="c1">#        &#39;scroll&#39;: True,</span>
+<span class="c1">#})</span>
+
+
+
+
+<span class="c1">#</span>
+<span class="c1">#from notebook.services.config import ConfigManager</span>
+<span class="c1">#cm = ConfigManager()</span>
+<span class="c1">#cm.update(&#39;livereveal&#39;, {</span>
+<span class="c1">#        &#39;width&#39;: 1600,</span>
+<span class="c1">#        &#39;height&#39;: 800,</span>
+<span class="c1">#        &#39;scroll&#39;: True,</span>
+<span class="c1">#})</span>
+
+<span class="c1">#</span>
+<span class="c1">#from notebook.services.config import ConfigManager</span>
+<span class="c1">#cm = ConfigManager()</span>
+<span class="c1">#cm.update(&#39;livereveal&#39;, {</span>
+<span class="c1">#        &#39;width&#39;: 1600,</span>
+<span class="c1">#        &#39;height&#39;: 800,</span>
+<span class="c1">#        &#39;scroll&#39;: True,</span>
+<span class="c1">#})</span>
 </pre></div>
 
 </div>
@@ -11844,11 +11882,17 @@ a.anchor-link {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{u&#39;height&#39;: 800, u&#39;scroll&#39;: True, u&#39;width&#39;: 1600}</pre>
+<pre>{u&#39;height&#39;: 900,
+ u&#39;scroll&#39;: True,
+ u&#39;slideNumber&#39;: False,
+ u&#39;start_slideshow_at&#39;: &#39;selected&#39;,
+ u&#39;theme&#39;: &#39;sky&#39;,
+ u&#39;transition&#39;: &#39;fade&#39;,
+ u&#39;width&#39;: 1600}</pre>
 </div>
 
 </div>
